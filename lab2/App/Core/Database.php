@@ -1,20 +1,33 @@
 <?php
 
 namespace App\Core;
+use PDO;
+use PDOException;
 
 class Database
 {
 
 
-    //Phần kết nối này em làm xong rôi nhưng em xóa để thầy khỏi phải import database để kiểm tra
-    private $_db_name;
-    private $_db_username;
-    private $_db_password;
-    private $_db_host;
+    private $host = "localhost";
+    private $username = "root";
+    private $password = "";
+    private $database = "php2";
+    private $charset = "utf8";
 
-    public function __construct()
-    {
-        echo '<h2>Kết nối csdl thành công</h2>';
+    private $pdo;
+
+    public function __construct() {
+        try {
+            $dsn = "mysql:host={$this->host};dbname={$this->database};charset={$this->charset}";
+            $this->pdo = new PDO($dsn, $this->username, $this->password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Kết nối database thất bại: " . $e->getMessage());
+        }
+    }
+
+    public function getConnection() {
+        return $this->pdo;
     }
 
 }
