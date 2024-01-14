@@ -9,6 +9,8 @@ use App\Models\BaseModel;
 use App\Controllers\BaseController;
 use App\Core\Route;
 
+use App\Models\UserModel;
+
 
 $db = new Database();
 
@@ -17,3 +19,10 @@ $baseController = new BaseController();
 $route = new Route();
 
 $dashboard = new DashboardController();
+
+
+// $user = new UserModel();
+
+// echo "<pre>";
+// print_r($user->getEmailUsers());
+// echo "<pre>";
