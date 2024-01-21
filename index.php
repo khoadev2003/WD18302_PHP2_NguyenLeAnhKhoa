@@ -1,3 +1,5 @@
 <?php
-    echo "Hello";
-?>
+
+session_start();
+require_once 'bootstrap.php';
+
