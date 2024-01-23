@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Hiển thị giá trị đó trong trường nhập liệu, giúp người dùng dễ dàng chỉnh sửa thông tin mà họ đã nhập trước đó.
+ */
 function old($key, $default = '')
 {
     $value = isset($_SESSION['old_input'][$key]) ? $_SESSION['old_input'][$key] : null;
@@ -16,7 +18,9 @@ function old($key, $default = '')
 }
 
 
-
+/***
+ * Lưu value của imput tạm thời vào SESSION
+ */
 function with($key, $value)
 {
     $_SESSION['view_data'][$key] = $value;

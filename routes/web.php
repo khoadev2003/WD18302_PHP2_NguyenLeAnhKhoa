@@ -21,6 +21,7 @@ Route::get('/admin/quen-mat-khau',[AuthController::class,'resetPassword']);
 
 Route::get('/admin/ve',[TicketController::class,'index']);
 Route::get('/admin/them-ve',[TicketController::class,'add']);
+Route::post('/admin/them-ve',[TicketController::class,'postAddTicket']);
 
 Route::get('/admin/hang-hang-khong',[AirlineController::class,'index']);
 

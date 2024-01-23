@@ -20,5 +20,5 @@ RewriteRule ^chi-tiet-san-pham/([0-9]+)$ index.php?url=chi-tiet-san-pham&id=$1 [
 
 RewriteRule ^404$ index.php?url=404 [L]
 
-
-ErrorDocument 404 http://localhost/my-project/asm_php2_route/404
+    
+ErrorDocument 404 http://localhost/wd18302_php2_nguyenleanhkhoa/404

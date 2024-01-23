@@ -5,6 +5,9 @@
         <!-- Start Content-->
         <div class="container-fluid">
             <?php
+
+                use App\Core\Session;
+
                 if(is_array($data) && !empty($data)) {
                     extract($data);
                     echo "<h2>{$departure_date}</h2>";
@@ -43,9 +46,17 @@
 
 
                             </ul> <!-- end nav-->
+                            <?php
+                                if(Session::has('success')):
+                            ?>
                             <div class="alert alert-success">
-                                Thành công
+                                
+                                <?= Session::pull('success') ?>
+                                
                             </div>
+                            <?php
+                                endif
+                            ?>
 
                             <div class="tab-content">
                                 <div class="tab-pane show active" id="input-types-preview">
@@ -55,34 +66,37 @@
                                                 <div class="mb-3">
                                                     <label for="example-select" class="form-label">Hãng hàng không</label>
 
-                                                    <select class="form-select" id="select_airline">
-                                                        <option selected>Chọn hãng hàng không</option>
-                                                        <option>Vietnam Airlines</option>
-                                                        <option>Vietjet Air</option>
-                                                        <option>Bamboo Airways</option>
-                                                        <option>Jetstar Pacific</option>
+                                                    <select name="airline" class="form-select" id="select_airline" required> 
+                                                        <option value="0" selected>Chọn hãng hàng không</option>
+                                                        <option value="1">Vietnam Airlines</option>
+                                                        <option value="2">Vietjet Air</option>
+                                                        <option value="3">Bamboo Airways</option>
+                                                        <option value="4">Jetstar Pacific</option>
                                                     </select>
+                                                    <span class="text-danger error">
+                                                        <?= Session::pull('err_airline') ?>
+                                                    </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Máy bay</label>
-                                                    <input type="text" id="simpleinput" class="form-control" placeholder="Số hiệu máy bay">
+                                                    <input type="text" name="name" value="<?= old('name') ?>" id="simpleinput" class="form-control" placeholder="Số hiệu máy bay">
                                                     <span class="text-danger error">
-
+                                                        <?= Session::pull('err_name') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Giá tiền</label>
-                                                    <input type="number" id="simpleinput" class="form-control" placeholder="Giá tiền">
+                                                    <input type="number" name="price" value="<?= old('price') ?>" id="simpleinput" class="form-control" placeholder="Giá tiền">
                                                     <span class="text-danger error">
-
+                                                        <?= Session::pull('err_price') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Số ghế</label>
-                                                    <input type="number" id="simpleinput" class="form-control" placeholder="Nhập số ghế">
-                                                    <div class="text-danger">
-                                                        Looks good!
-                                                    </div>
+                                                    <input type="number" name="seat" value="<?= old('seat') ?>" id="simpleinput" class="form-control" placeholder="Nhập số ghế">
+                                                    <span class="text-danger error">
+                                                        <?= Session::pull('err_seat') ?>
+                                                    </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Trạng thái hiển thị</label><br>
@@ -97,54 +111,50 @@
 
                                                 <div class="mb-3">
                                                     <label for="departure_airport" class="form-label">Địa điểm khởi hành</label>
-                                                    <select class="form-select" id="departure_airport">
-                                                        <option selected>Chọn diểm khởi hành</option>
-                                                        <option>Hà Nội</option>
-                                                        <option>Hồ Chí Minh</option>
+                                                    <select name="departure_airport" class="form-select" id="departure_airport">
+                                                        <option value="" selected>Chọn diểm khởi hành</option>
+                                                        <option value="1" >Hà Nội</option>
+                                                        <option value="2" >Hồ Chí Minh</option>
 
                                                     </select>
                                                     <span class="text-danger error">
-
+                                                        <?= Session::pull('err_departure_airport') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="departure_date" class="form-label">
                                                         Ngày khởi hành
-                                                        <=> <span class="text-danger">Chỉ được nhập ngày hiện tại hoặc tương lai</span>
+                                                        <=> <span class="text-success">Chỉ được nhập ngày hiện tại hoặc tương lai</span>
                                                     </label>
-                                                    <input class="form-control" id="departure_date" type="datetime-local" name="departure_date">
+                                                    <input class="form-control" value="<?= old('departure_date') ?>" id="departure_date" type="datetime-local" name="departure_date">
                                                     <span class="text-danger error">
-
+                                                        <?= Session::pull('err_departure_date') ?>
                                                     </span>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="arrival_airport" class="form-label">Địa điểm đến</label>
-                                                    <select class="form-select" id="arrival_airport">
-                                                        <option selected>Chọn diểm đến</option>
-                                                        <option>Hà Nội</option>
-                                                        <option>Hồ Chí Minh</option>
+                                                    <select name="arrival_airport" class="form-select" id="arrival_airport">
+                                                        <option value="" selected>Chọn diểm đến</option>
+                                                        <option value="1" >Hà Nội</option>
+                                                        <option value="2" >Hồ Chí Minh</option>
 
                                                     </select>
                                                     <span class="text-danger error">
-
+                                                        <?= Session::pull('err_arrival_airport') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="arrival_date" class="form-label">
                                                         Ngày đến
-                                                        <=> <span class="text-danger">Ngày đến phải bằng hoặc sau ngày đi</span>
+                                                        <=> <span class="text-success">Ngày đến phải bằng hoặc sau ngày đi</span>
                                                     </label>
-                                                    <input class="form-control" id="arrival_date" type="datetime-local" name="arrival_date">
+                                                    <input class="form-control" value="<?= old('arrival_date') ?>" name="arrival_date" id="arrival_date" type="datetime-local" name="arrival_date">
                                                     <span class="text-danger error">
-
+                                                        <?= Session::pull('err_arrival_date') ?>
                                                     </span>
                                                 </div>
-
-                                                <div class="mb-3">
-                                                    <label for="example-fileinput" class="form-label">Default file input</label>
-                                                    <input type="file" id="example-fileinput" class="form-control">
-                                                </div>
+                                                
 
                                                 <!-- Xác nhận thêm vé -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#success-header-modal">
