@@ -11,6 +11,17 @@ class Request
      *  2. Body
      * */
 
+    public function redirect($uri ='') {
+        if(preg_match('~^(http|https)~is', $uri)) {
+            $url = $uri;
+        }else {
+            $url = _WEB_ROOT.'/'. $uri;
+        }
+
+        header("Location: ".$url);
+        exit;
+    }
+
     public function getMethod()
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
@@ -209,9 +220,14 @@ class Request
 
 
     // Custom
-    public static function input($key, $default = null)
+    public static function input($name, $default = null)
     {
-        return isset($_REQUEST[$key]) ? $_REQUEST[$key] : $default;
+        return isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
+    }
+
+    public static function file($name)
+    {
+        return isset($_FILES[$name]) ? $_FILES[$name] : null;
     }
 
     public static function get($key, $default = null)

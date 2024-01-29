@@ -1,5 +1,5 @@
 <?php
-use App\Core\Session;
+    use App\Core\Session;
 ?>
 <div class="content-page">
     <div class="content">
@@ -15,8 +15,8 @@ use App\Core\Session;
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                <li class="breadcrumb-item"><a href="<?= action('admin/san-bay') ?>">Danh sách sân bay</a></li>
-                                <li class="breadcrumb-item active">Thêm sân bay</li>
+                                <li class="breadcrumb-item"><a href="<?= action('admin/hang-hang-khong') ?>">Danh sách hãng hàng không</a></li>
+                                <li class="breadcrumb-item active">Thêm hãng hàng không</li>
                             </ol>
                         </div>
                         <h4 class="page-title"><?= $title ?></h4>
@@ -32,9 +32,11 @@ use App\Core\Session;
                     <div class="card">
 
                         <div class="card-body">
-                            <h4 class="header-title">Thêm sân bay</h4>
+                            <h4 class="header-title">Thêm hãng hàng không</h4>
+
 
                             <ul class="nav nav-tabs nav-bordered mb-3">
+
 
                             </ul> <!-- end nav-->
                             <?php
@@ -56,26 +58,26 @@ use App\Core\Session;
                                             <div class="col-lg-6">
 
                                                 <div class="mb-3">
-                                                    <label for="name-airline" class="form-label">Tên sân bay</label>
-                                                    <input type="text" name="name" value="<?= old('name') ?>" id="name-airline" class="form-control" placeholder="Nhập tên sân bay">
+                                                    <label for="name-airline" class="form-label">Tên hãng hàng không</label>
+                                                    <input type="text" name="name" value="<?= old('name') ?>" id="name-airline" class="form-control" placeholder="Nhập tên hãng hàng không">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_name') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="logo-airline" class="form-label">Địa diểm</label>
-                                                    <input type="text" name="location" value="<?= old('location') ?>" id="logo-airline" class="form-control" placeholder="Địa điểm">
+                                                    <label for="logo-airline" class="form-label">Logo</label>
+                                                    <input type="file" name="logo" value="<?= old('logo') ?>" id="logo-airline" class="form-control" placeholder="Chọn logo">
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_location') ?>
+                                                        <?= Session::pull('err_logo') ?>
                                                     </span>
                                                 </div>
 
                                                 <!-- Xác nhận thêm vé -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#success-header-modal">
-                                                    Thêm sân bay
+                                                    Thêm hãng
                                                 </button>
 
-                                                <button type="button" tabindex="0" class="btn btn-dark" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Nhập đầy đủ các thông tin để thêm sân bay." title="Lưu ý !">
+                                                <button type="button" tabindex="0" class="btn btn-dark" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Nhập đầy đủ các thông tin để thêm hãng hàng không." title="Lưu ý !">
                                                     Hướng dẫn
                                                 </button>
 
@@ -87,7 +89,7 @@ use App\Core\Session;
                                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Bạn có chắc chắn muốn thêm sân bay?
+                                                                Bạn có chắc chắn muốn thêm hãng hàng không?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>

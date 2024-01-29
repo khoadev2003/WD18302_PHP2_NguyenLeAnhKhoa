@@ -15,8 +15,7 @@
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                                <li class="breadcrumb-item active">Data Tables</li>
+                                <li class="breadcrumb-item active">Danh sách sân bay</li>
                             </ol>
                         </div>
                         <h4 class="page-title"><?= $title ?></h4>
@@ -32,9 +31,7 @@
 
                             <div class="row mb-2">
                                 <div class="col-sm-5">
-                                    <div class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#add_airport">
-                                        <i class="mdi mdi-plus-circle me-2"></i> Thêm sân bay
-                                    </div>
+                                    <a href="<?= action('admin/them-san-bay')  ?>" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle me-2"></i> Thêm sân bay</a>
                                 </div>
 
 
@@ -60,9 +57,11 @@
                                 <table id="basic-datatable" class="table table-centered dt-responsive nowrap w-100">
                                     <thead class="table-light">
                                         <tr>
+                                            <th>#</th>
                                             <th>Tên sân bay</th>
                                             <th>Địa diểm</th>
                                             <th>Ngày thêm</th>
+                                            <th>Cập nhật</th>
                                             <th>Thao tác</th>
 
                                         </tr>
@@ -70,14 +69,22 @@
 
 
                                     <tbody>
-
+                                    <?php
+                                        $i = 0;
+                                        foreach ($list_airport as $item):
+                                            extract($item);
+                                            $i++;
+                                    ?>
                                         <tr>
-                                            <td class="fw-bolder">Tân Sơn Nhất</td>
+                                            <td class="fw-bolder"><?= $i ?></td>
+                                            <td class="fw-bolder"><?= $name ?></td>
                                             <td class="fw-bolder" style="width: 610px;">
-                                                Trường Sơn, Phường 2, Tân Bình, Thành phố Hồ Chí Minh
+                                                <?= $location ?>
 
                                             </td>
-                                            <td class="fw-bolder">21/11/203</td>
+                                            <td class="fw-bolder"><?= $created_at ?></td>
+
+                                            <td class="fw-bolder"><?= $updated_at ?></td>
 
                                             <td>
                                             
@@ -109,45 +116,11 @@
                                                 </div><!-- /.modal -->
                                             </td>
                                         </tr>
+                                    <?php
 
-                                        <tr>
-                                            <td class="fw-bolder">Nội Bài</td>
-                                            <td class="fw-bolder" style="width: 610px;">
-                                            Phú Minh, Sóc Sơn, Hà Nội
+                                        endforeach;
+                                    ?>
 
-                                            </td>
-                                            <td class="fw-bolder">30/11/203</td>
-                                                
-                                            <td>
-
-                                                <a href="#" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                </a>
-
-                                                <!-- Danger Header Modal -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
-                                                    <i class="mdi mdi-delete"></i>
-                                                </button>
-
-                                                <div id="danger-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-danger">
-                                                                <h4 class="modal-title text-light" id="danger-header-modalLabel">Xác nhận</h4>
-                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="xoa" class="btn btn-danger">Xác nhận</a>
-                                                            </div>
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div><!-- /.modal -->
-                                            </td>
-                                        </tr>
 
 
 

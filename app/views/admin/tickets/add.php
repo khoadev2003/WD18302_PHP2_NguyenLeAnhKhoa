@@ -1,19 +1,12 @@
-
+<?php
+    use App\Core\Session;
+?>
 <div class="content-page">
     <div class="content">
 
         <!-- Start Content-->
         <div class="container-fluid">
-            <?php
 
-                use App\Core\Session;
-
-                if(is_array($data) && !empty($data)) {
-                    extract($data);
-                    echo "<h2>{$departure_date}</h2>";
-                    echo "<h2>{$arrival_date}</h2>";
-                }
-            ?>
 
             <!-- start page title -->
             <div class="row">
@@ -98,11 +91,7 @@
                                                         <?= Session::pull('err_seat') ?>
                                                     </span>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label for="simpleinput" class="form-label">Trạng thái hiển thị</label><br>
-                                                    <input type="checkbox" id="switch1" checked data-switch="bool" />
-                                                    <label for="switch1" data-on-label="On" data-off-label="Off"></label>
-                                                </div>
+
 
                                                 <!-- end d-grid -->
                                             </div> <!-- end col -->

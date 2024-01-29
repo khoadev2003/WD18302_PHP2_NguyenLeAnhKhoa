@@ -2,176 +2,73 @@
 
 namespace App\Models;
 
-use Dotenv\Dotenv as Dotenv;
-use PDO;
-use PDOException;
+use App\Models\Interfaces\CrudInterface;
+use App\Core\Database;
 
-class BaseModel{
-    private $_host;
-    private $_username;
-    private $_password;
-    private $_database;
-    private $_charset;
+class BaseModel implements CrudInterface
+{
+    protected $table;
+    protected $db;
 
-    private $_pdo;
-
-    public function __construct() {
-        $dotenv = Dotenv::createImmutable(__DIR__. '/../../');
-        $dotenv->load();
-
-        $this->_host = $_ENV['DB_HOST'];
-        $this->_username = $_ENV['DB_USERNAME'];
-        $this->_password = $_ENV['DB_PASSWORD'];
-        $this->_database = $_ENV['DB_DATABASE'];
-        $this->_charset = $_ENV['DB_CHARSER'];
-
-        try {
-            $dsn = "mysql:host={$this->_host};dbname={$this->_database};charset={$this->_charset}";
-            $this->_pdo = new PDO($dsn, $this->_username, $this->_password);
-            $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Kết nối thành công";
-        } catch (PDOException $e) {
-            die("Kết nối database thất bại: " . $e->getMessage());
-        }
+    public function __construct()
+    {
+        $this->db = new Database();
     }
 
-    public function getConnection() {
-        return $this->_pdo;
+    public function getAll()
+    {
+        $query = "SELECT * FROM {$this->table}";
+        return $this->db->select($query);
     }
 
-
-    public function execute($sql){
-        $sql_args = array_slice(func_get_args(), 1);
-        try{
-            $conn = $this->getConnection();
-            $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
-        }
-        catch(PDOException $e){
-            throw $e;
-        }
-        finally{
-            unset($conn);
-        }
+    public function getOne(int $id)
+    {
+        $query = "SELECT * FROM {$this->table} WHERE id = :id";
+        return $this->db->select($query, ['id' => $id]);
     }
 
-    // Insert
-    public function insert($sql){
-        $sql_args = array_slice(func_get_args(), 1);
-        try{
-            $conn = $this->getConnection();
-            $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
-        }
-        catch(PDOException $e){
-            throw $e;
-        }
-        finally{
-            unset($conn);
-        }
+    public function create(array $data)
+    {
+        $columns = implode(', ', array_keys($data));
+        $values = ':' . implode(', :', array_keys($data));
+
+        $query = "INSERT INTO {$this->table} ({$columns}) VALUES ({$values})";
+
+        return $this->db->insert($query, $data);
     }
 
-    // Insert
-    public function update($sql){
-        $sql_args = array_slice(func_get_args(), 1);
-        try{
-            $conn = $this->getConnection();
-            $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
-        }
-        catch(PDOException $e){
-            throw $e;
-        }
-        finally{
-            unset($conn);
-        }
+    public function read(int $id)
+    {
+        return $this->getOne($id);
     }
 
+    public function update(int $id, array $data)
+    {
+        $updateString = '';
+        foreach ($data as $key => $value) {
+            $updateString .= "{$key} = :{$key}, ";
+        }
+        $updateString = rtrim($updateString, ', ');
 
-    public function query($sql){
-        $sql_args = array_slice(func_get_args(), 1);
-        try{
-            $conn = $this->getConnection();
-            $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
-            $rows = $stmt->fetchAll();
-            return $rows;
-        }
-        catch(PDOException $e){
-            throw $e;
-        }
-        finally{
-            unset($conn);
-        }
+        $query = "UPDATE {$this->table} SET {$updateString} WHERE id = :id";
+
+        return $this->db->update($query, array_merge(['id' => $id], $data));
     }
 
-    public function query_one($sql){
-        $sql_args = array_slice(func_get_args(), 1);
-        try{
-            $conn = $this->getConnection();
-            $stmt = $conn->prepare($sql);
-            $stmt->execute($sql_args);
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $row;
-        }
-        catch(PDOException $e){
-            throw $e;
-        }
-        finally{
-            unset($conn);
-        }
+    public function remove(int $id)
+    {
+        $query = "DELETE FROM {$this->table} WHERE id = :id";
+
+        return $this->db->delete($query, ['id' => $id]);
     }
 
-    public function insert2($table, $data) {
-        try {
-            $fields = implode(', ', array_keys($data));
-            $values = implode(', ', array_fill(0, count($data), '?'));
-
-            $sql = "INSERT INTO $table ($fields) VALUES ($values)";
-            $this->execute($sql, ...array_values($data));
-        } catch (PDOException $e) {
-            // Handle or log the exception
-            throw $e;
-        }
+     //Thêm phương thức cho việc thực hiện truy vấn JOIN
+    public function join($table, $condition, $columns = '*', $type = 'INNER')
+    {
+        $query = "SELECT {$columns} FROM {$this->table} {$type} JOIN {$table} ON {$condition}";
+        return $this->db->select($query);
     }
 
-    public function update2($table, $data, $condition) {
-        try {
-            $setClause = implode(', ', array_map(fn($key) => "$key = ?", array_keys($data)));
+    
 
-            $sql = "UPDATE $table SET $setClause WHERE $condition";
-            $this->execute($sql, ...array_values($data));
-        } catch (PDOException $e) {
-            // Handle or log the exception
-            throw $e;
-        }
-    }
-
-    public function delete2($table, $condition) {
-        try {
-            $sql = "DELETE FROM $table WHERE $condition";
-            $this->execute($sql);
-        } catch (PDOException $e) {
-            // Handle or log the exception
-            throw $e;
-        }
-    }
 }
-
-//Cách sử dụng
-
-// // Instantiate your BaseModel
-// $baseModel = new BaseModel();
-
-// // Example Insert
-// $insertData = ['column1' => 'value1', 'column2' => 'value2'];
-// $baseModel->insert('your_table', $insertData);
-
-// // Example Update
-// $updateData = ['column1' => 'new_value1', 'column2' => 'new_value2'];
-// $condition = 'id = 1'; // Change this condition based on your requirements
-// $baseModel->update('your_table', $updateData, $condition);
-
-// // Example Delete
-// $conditionToDelete = 'id = 2'; // Change this condition based on your requirements
-// $baseModel->delete('your_table', $conditionToDelete);

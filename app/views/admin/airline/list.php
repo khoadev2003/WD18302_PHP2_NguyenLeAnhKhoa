@@ -32,9 +32,7 @@
 
                             <div class="row mb-2">
                                 <div class="col-sm-5">
-                                    <div class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#add_airport">
-                                        <i class="mdi mdi-plus-circle me-2"></i> Thêm hãng hàng không
-                                    </div>
+                                    <a href="<?= action('admin/them-hang-hang-khong')  ?>" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle me-2"></i> Thêm hãng hàng không</a>
                                 </div>
 
                                 
@@ -60,9 +58,11 @@
                                 <table id="basic-datatable" class="table table-centered dt-responsive nowrap w-100">
                                     <thead class="table-light">
                                         <tr>
+                                            <th>#</th>
                                             <th>Tên hãng</th>
                                             <th>Logo</th>
                                             <th>Ngày thêm</th>
+                                            <th>Cập nhật</th>
                                             <th>Thao tác</th>
 
                                         </tr>
@@ -70,18 +70,24 @@
 
 
                                     <tbody>
-
+                                    <?php
+                                        $i = 0;
+                                        foreach ($list_airline as $item):
+                                        extract($item);
+                                        $i++;
+                                    ?>
                                         <tr>
-                                            <td class="fw-bolder">Vietjet</td>
+                                            <td class="fw-bolder"><?= $i ?></td>
+                                            <td class="fw-bolder"><?= $name ?></td>
                                             <td>
                                                 
-                                                <img style="max-width: 90px;" src="<?= asset('admin/assets/images/VJ.png') ?>" alt="">
+                                                <img style="max-width: 90px;" src="<?= asset('admin/assets/images/'). $logo_path ?>" alt="">
                                                   
                                             </td>
-                                            <td class="fw-bolder">21/11/203</td>
-                                            
+                                            <td class="fw-bolder"><?= $created_at ?></td>
+                                            <td class="fw-bolder"><?= $updated_at ?></td>
                                             <td>
-                                                
+
                                                 <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
 
                                                 <!-- Danger Header Modal -->
@@ -108,8 +114,11 @@
                                                 </div><!-- /.modal -->
                                             </td>
                                         </tr>
+                                   <?php
 
-                                        
+                                        endforeach;
+                                    ?>
+
 
 
 
@@ -139,37 +148,6 @@
 
     </div> <!-- content -->
 
-
-
-
-    <!-- Modal thêm sân bay -->
-    <div class="modal fade" id="add_airport" tabindex="-1" aria-labelledby="add_airport" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="CreateProjectLabel">Thêm hãng hàng không</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3">
-                        <div class="mb-3">
-                            <label for="airlineName" class="form-label">Tên hãng hàng không</label>
-                            <input type="text" class="form-control" id="airlineName" placeholder="Tên hãng hàng không...">
-                        </div>
-                        <div class="mb-3">
-                            <label for="logoAirline" class="form-label">Logo</label>
-                            <input type="file" class="form-control" id="logoAirline" placeholder="Địa diểm...">
-                        </div>
-                       
-
-                        
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary">Lưu lại</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
     <!-- Footer Start -->

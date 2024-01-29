@@ -59,7 +59,7 @@
                                         <tr>
                                             <th>Ngày</th>
                                             <th>Thông tin</th>
-                                            <th>Số lượng</th>
+                                            <th>Số ghế</th>
                                             <th>Hiện còn</th>
                                             <th>Giá</th>
                                             <th>Thao tác</th>
@@ -69,25 +69,33 @@
 
 
                                     <tbody>
-
+                                    <?php
+                                        $i = 0;
+                                        foreach ($list_flight as $item):
+                                            extract($item);
+                                            $i++;
+                                    ?>
                                         <tr>
                                             <td>21/11/203</td>
                                             <td>
                                                 <div class="row">
                                                     <div class="col-md-3">
-                                                        <img style="max-width: 90px;" src="<?= asset('admin/assets/images/VJ.png') ?>" alt="">
+                                                        <img style="max-width: 90px;" src="<?= asset('admin/assets/images/'). $logo_airline ?>" alt="logo">
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <p class="p-table text-danger fw-bolder">VietNam Airline</p>
-                                                        <p class="p-table"><span class="fw-bolder">Vị trí:</span> Nội Bài Hà Nội</p>
-                                                        <p class="p-table"><span class="fw-bolder">Khởi hành:</span> Nội Bài - Hà Nội 19:30 PM</p>
-                                                        <p class="p-table"><span class="fw-bolder">Đến:</span> Hội An - Huế 20:30 PM</p>
+<!--                                                        <p class="p-table text-danger fw-bolder">--><?php //= $airline_name ?><!--</p>-->
+
+                                                        <p class="p-table"><span class="fw-bolder">Khởi hành:</span> <?= $departure_airport_name ?></p>
+                                                        <p class="p-table"><span class="fw-bolder">Thời gian:</span> <?= $departure_datetime ?></p>
+
+                                                        <p class="p-table"><span class="fw-bolder">Đến:</span> <?= $arrival_airport_name ?></p>
+                                                        <p class="p-table"><span class="fw-bolder">Thời gian:</span> <?= $arrival_datetime ?></p>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>55</td>
-                                            <td>95</td>
-                                            <td>$100,850</td>
+                                            <td><?=$seat ?></td>
+                                            <td><?=$seat ?></td>
+                                            <td><?= number_format($price) ?>.đ</td>
                                             <td>
                                                 <a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
                                                 <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
@@ -116,99 +124,11 @@
                                                 </div><!-- /.modal -->
                                             </td>
                                         </tr>
+                                    <?php
 
-                                        <tr>
-                                            <td>22/11/203</td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img style="max-width: 90px;" src="<?= asset('admin/assets/images/BL.png') ?>" alt="">
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <p class="p-table text-danger fw-bolder">VietNam Airline</p>
-                                                        <p class="p-table"><span class="fw-bolder">Vị trí:</span> Nội Bài Hà Nội</p>
-                                                        <p class="p-table"><span class="fw-bolder">Khởi hành:</span> Nội Bài - Hà Nội 19:30 PM</p>
-                                                        <p class="p-table"><span class="fw-bolder">Đến:</span> Hội An - Huế 20:30 PM</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>55</td>
-                                            <td>95</td>
-                                            <td>$100,850</td>
-                                            <td>
-                                                <a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
-                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
+                                        endforeach;
+                                    ?>
 
-                                                <!-- Danger Header Modal -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
-                                                    <i class="mdi mdi-delete"></i>
-                                                </button>
-
-                                                <div id="danger-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-danger">
-                                                                <h4 class="modal-title text-light" id="danger-header-modalLabel">Xác nhận</h4>
-                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="xoa" class="btn btn-danger">Xác nhận</a>
-                                                            </div>
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div><!-- /.modal -->
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>25/11/203</td>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        <img style="max-width: 90px;" src="<?= asset('admin/assets/images/QH.png') ?>" alt="">
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <p class="p-table text-danger fw-bolder">VietNam Airline</p>
-                                                        <p class="p-table"><span class="fw-bolder">Vị trí:</span> Nội Bài Hà Nội</p>
-                                                        <p class="p-table"><span class="fw-bolder">Khởi hành:</span> Nội Bài - Hà Nội 19:30 PM</p>
-                                                        <p class="p-table"><span class="fw-bolder">Đến:</span> Hội An - Huế 20:30 PM</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>55</td>
-                                            <td>95</td>
-                                            <td>$100,850</td>
-                                            <td>
-                                                <a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
-                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
-
-                                                <!-- Danger Header Modal -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
-                                                    <i class="mdi mdi-delete"></i>
-                                                </button>
-
-                                                <div id="danger-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-danger">
-                                                                <h4 class="modal-title text-light" id="danger-header-modalLabel">Xác nhận</h4>
-                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="xoa" class="btn btn-danger">Xác nhận</a>
-                                                            </div>
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div><!-- /.modal -->
-                                            </td>
-                                        </tr>
 
 
 

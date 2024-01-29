@@ -1,8 +1,10 @@
+<?php
+    use App\Core\Session;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
-    
-<!-- Mirrored from coderthemes.com/hyper/saas/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 14 Dec 2023 13:30:15 GMT -->
+
 <head>
         <meta charset="utf-8" />
         <title>Đăng nhập | Vai trò Admin</title>
@@ -55,22 +57,29 @@
                                     <p class="text-muted mb-4">Nhập địa chỉ email và mật khẩu của bạn để truy cập bảng quản trị.</p>
                                 </div>
 
-                                <form action="#">
+                                <form action="" method="post">
 
                                     <div class="mb-3">
                                         <label for="emailaddress" class="form-label">Tài khoản hoặc email</label>
-                                        <input class="form-control" type="email" id="emailaddress" required="" placeholder="Nhập tài khoản hoặc email">
+                                        <input class="form-control" value="<?= old('email') ?>" name="email" type="email"
+                                               id="emailaddress" placeholder="Nhập tài khoản hoặc email" autofocus>
+                                        <span class="text-danger error">
+                                            <?= Session::pull('err_email') ?>
+                                        </span>
                                     </div>
 
                                     <div class="mb-3">
                                         <a href="<?= action('admin/quen-mat-khau') ?>" class="text-muted float-end"><small>Quên mật khẩu?</small></a>
                                         <label for="password" class="form-label">Mật khẩu</label>
                                         <div class="input-group input-group-merge">
-                                            <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
+                                            <input type="password" value="<?= old('password') ?>" name="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
                                             <div class="input-group-text" data-password="false">
                                                 <span class="password-eye"></span>
                                             </div>
                                         </div>
+                                        <span class="text-danger error">
+                                            <?= Session::pull('err_password') ?>
+                                        </span>
                                     </div>
 
                                     <div class="mb-3 mb-3">
