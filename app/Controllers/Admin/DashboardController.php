@@ -2,9 +2,17 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Models\User;
+use App\Repositories\UserRepository;
 
 class DashboardController extends Controller{
     public $data = [];
+
+    public function __construct()
+    {
+        // Check login
+        UserRepository::checkLogin();
+    }
 
     public function index() {
         $_SESSION['title_page'] = 'Quản lí vé máy bay';

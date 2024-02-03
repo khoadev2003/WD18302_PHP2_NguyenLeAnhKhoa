@@ -87,6 +87,13 @@
                             </a>
                         </li>
 
+                        <li class="side-nav-item">
+                            <a href="<?= action('admin/dang-xuat') ?>" class="side-nav-link text-primary">
+                                <i class="mdi mdi-logout"></i>
+                                <span>Đăng xuất</span>
+                            </a>
+                        </li>
+
                         
 
 

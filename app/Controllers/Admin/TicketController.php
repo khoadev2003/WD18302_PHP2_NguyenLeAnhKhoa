@@ -7,32 +7,41 @@ use App\Core\Session;
 use App\Core\Request;
 use App\Core\Response;
 use App\Models\Flight;
+use App\Models\User;
+use App\Repositories\UserRepository;
 use DateTime;
+use App\Validator\TicketValidator;
 
 use App\Core\Controller;
+use Dotenv\Validator;
 
 class TicketController extends Controller{
     public $data = [];
     public $request;
-    public $response;
+    public $FlightModel;
+    public $validator;
 
 
     public function __construct()
     {
         $this->request = new Request();
-        $this->response = new Response();
+        $this->FlightModel = new Flight();
+        $this->validator = new TicketValidator();
+
+//        Check login
+        UserRepository::checkLogin();
+
     }
 
     public function index() {
         Session::set('title_page', 'Danh sách vé máy bay');
 
-        $flight = new Flight();
 
         $this->data['main']= 'admin/tickets/list';
-//        $this->data['content']['title']= "Danh sách vé máy bay";
+
         $this->data['content'] = [
             'title' => 'Danh sách vé máy bay',
-            'list_flight' => $flight->getAllFilght(),
+            'list_flight' => $this->FlightModel->getAllFilght(),
         ];
 
 
@@ -47,18 +56,7 @@ class TicketController extends Controller{
         $this->render('layouts/admin_layout', $this->data);
     }
 
-    public function postAddTicket() {
-        function isValidFutureDateTime($inputDateTime) {
-            date_default_timezone_set('Asia/Ho_Chi_Minh');
-            $currentDateTime = new DateTime();
-            $inputDateTimeObject = new DateTime($inputDateTime);
-        
-            return $inputDateTimeObject->format('Y-m-d H:i:s') >= $currentDateTime->format('Y-m-d H:i:s');
-        }
-
-        function pattern_datetime(): string {
-            return '/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/';
-        }
+    public function handleAddTicket() {
 
         $count_error = 0;
 
@@ -71,29 +69,26 @@ class TicketController extends Controller{
         $seat = $this->request->input('seat');
         $name = $this->request->input('name');
         
-        
 
-        //Check ngày giờ
-//        $checkDate = '/^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$/';
 
         // Ngày khởi hành
-        if (!preg_match( pattern_datetime(), $departure_date)) {
+        if (!preg_match( $this->validator->pattern_datetime(), $departure_date)) {
             Session::set('err_departure_date', 'Định dạng ngày giờ không hợp lệ!');
             $count_error++;
         }
 
-        if (!isValidFutureDateTime($departure_date)) {
+        if (!$this->validator->isValidFutureDateTime($departure_date)) {
             Session::set('err_departure_date', 'Ngày không hợp lệ. Không được nhập ngày giờ quá khứ.');
             $count_error++;
         } 
 
         // Ngày đến
-        if (!preg_match( pattern_datetime(), $arrival_date)) {
+        if (!preg_match( $this->validator->pattern_datetime(), $arrival_date)) {
             Session::set('err_arrival_date', 'Định dạng ngày giờ không hợp lệ!');
             $count_error++;
         }
 
-        if (!isValidFutureDateTime($arrival_date)) {
+        if (!$this->validator->isValidFutureDateTime($arrival_date)) {
             Session::set('err_arrival_date', 'Ngày không hợp lệ. Không được nhập ngày giờ quá khứ.');
             $count_error++;
         }
@@ -156,13 +151,13 @@ class TicketController extends Controller{
             with('departure_date', $departure_date);
             with('arrival_airport', $arrival_airport);
             with('arrival_date', $arrival_date);
-            $this->response->redirect('admin/them-ve');
-            return;
+            $this->redirect('admin/them-ve');
+
         }else {
 
             Session::set('success', 'Thêm vé máy bay thành công.');
-            $this->response->redirect('admin/them-ve');
-            return;
+            $this->redirect('admin/them-ve');
+
 
             //Xử lý Models Flights
 

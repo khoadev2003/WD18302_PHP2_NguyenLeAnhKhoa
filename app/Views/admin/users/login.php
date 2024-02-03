@@ -61,7 +61,7 @@
 
                                     <div class="mb-3">
                                         <label for="emailaddress" class="form-label">Tài khoản hoặc email</label>
-                                        <input class="form-control" value="<?= old('email') ?>" name="email" type="email"
+                                        <input class="form-control" value="<?= old('email') ?>" name="email" type="text"
                                                id="emailaddress" placeholder="Nhập tài khoản hoặc email" autofocus>
                                         <span class="text-danger error">
                                             <?= Session::pull('err_email') ?>

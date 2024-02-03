@@ -6,23 +6,30 @@ namespace App\Controllers\Admin;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
-use App\Models\Airline;
+use App\Repositories\AirlineRepository;
+use App\Repositories\UserRepository;
 
 class AirlineController extends Controller{
+    public $airlineRepository;
     public $data = [];
 
+
+    public function __construct()
+    {
+        // Check login
+        UserRepository::checkLogin();
+
+        $this->airlineRepository = new AirlineRepository();
+    }
 
     public function index() {
         Session::set('title_page', 'Danh sách hãng hàng không');
 
-        $airline = new Airline();
-
         $this->data['main']= 'admin/airline/list';
 
-//        $this->data['content']['title']= "Danh sách hãng hàng không";
         $this->data['content'] = [
             'title' => 'Danh sách hãng hàng không',
-            'list_airline' => $airline->getAll(),
+            'list_airline' => $this->airlineRepository->getAllAirline(),
         ];
         $this->render('layouts/admin_layout', $this->data);
     }
@@ -36,13 +43,18 @@ class AirlineController extends Controller{
         $this->render('layouts/admin_layout', $this->data);
     }
 
-    public function checkAdd()
+    public function handleAddAirline()
     {
         $request = new Request();
         $count_err =0;
 
         $name_airline = $request->input('name');
         $logo = $request->input('logo');
+
+        $nameExists = $this->airlineRepository->getAirportByName('name','name', $name_airline);
+        if(count($nameExists) > 0) {
+            Session::set('err_name', 'Tên hãng hàng không đã tồn tại');
+        }
 
         if(empty($name_airline)) {
             Session::set('err_name', 'Tên hãng hông được để trống');

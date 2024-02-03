@@ -15,7 +15,10 @@
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                <li class="breadcrumb-item active">Danh sách sân bay</li>
+
+                                <li class="breadcrumb-item">
+                                    Danh sách hãng hàng không
+                                </li>
                             </ol>
                         </div>
                         <h4 class="page-title"><?= $title ?></h4>
@@ -31,10 +34,10 @@
 
                             <div class="row mb-2">
                                 <div class="col-sm-5">
-                                    <a href="<?= action('admin/them-san-bay')  ?>" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle me-2"></i> Thêm sân bay</a>
+                                    <a href="<?= action('admin/them-hang-hang-khong')  ?>" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle me-2"></i> Thêm hãng hàng không</a>
                                 </div>
 
-
+                                
                                 <div class="col-sm-7">
                                     <div class="text-sm-end">
                                         <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
@@ -58,11 +61,11 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>#</th>
-                                            <th>Tên sân bay</th>
-                                            <th>Địa diểm</th>
+                                            <th>Tên hãng</th>
+                                            <th>Logo</th>
                                             <th>Ngày thêm</th>
                                             <th>Cập nhật</th>
-                                            <th>Thao tác</th>
+                                            <th class="text-end">Thao tác</th>
 
                                         </tr>
                                     </thead>
@@ -71,26 +74,23 @@
                                     <tbody>
                                     <?php
                                         $i = 0;
-                                        foreach ($list_airport as $item):
-                                            extract($item);
-                                            $i++;
+                                        foreach ($list_airline as $item):
+                                        extract($item);
+                                        $i++;
                                     ?>
                                         <tr>
                                             <td class="fw-bolder"><?= $i ?></td>
                                             <td class="fw-bolder"><?= $name ?></td>
-                                            <td class="fw-bolder" style="width: 610px;">
-                                                <?= $location ?>
-
+                                            <td>
+                                                
+                                                <img style="max-width: 90px;" src="<?= asset('admin/assets/images/'). $logo_path ?>" alt="">
+                                                  
                                             </td>
                                             <td class="fw-bolder"><?= $created_at ?></td>
-
                                             <td class="fw-bolder"><?= $updated_at ?></td>
+                                            <td class="text-end">
 
-                                            <td>
-                                            
-                                                <a href="#" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                </a>
+                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
 
                                                 <!-- Danger Header Modal -->
                                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
@@ -116,7 +116,7 @@
                                                 </div><!-- /.modal -->
                                             </td>
                                         </tr>
-                                    <?php
+                                   <?php
 
                                         endforeach;
                                     ?>
@@ -150,39 +150,6 @@
 
     </div> <!-- content -->
 
-
-
-
-    <!-- Modal thêm sân bay -->
-    <div class="modal fade" id="add_airport" tabindex="-1" aria-labelledby="add_airport" aria-hidden="true">
-        <form action="" method="post">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="CreateProjectLabel">Thêm sân bay</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-3">
-                        <div class="mb-3">
-                            <label for="projectName" class="form-label">Tên sân bay</label>
-                            <input type="text" class="form-control" id="projectName" placeholder="Tên sân bay...">
-                        </div>
-                        <div class="mb-3">
-                            <label for="location" class="form-label">Địa diểm</label>
-                            <input type="text" class="form-control" id="location" placeholder="Địa diểm...">
-                        </div>
-
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary">Lưu lại</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
 
 
     <!-- Footer Start -->

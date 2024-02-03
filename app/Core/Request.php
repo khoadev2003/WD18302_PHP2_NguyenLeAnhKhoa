@@ -230,7 +230,7 @@ class Request
         return isset($_FILES[$name]) ? $_FILES[$name] : null;
     }
 
-    public static function get($key, $default = null)
+    public function get($key, $default = null)
     {
         return isset($_GET[$key]) ? $_GET[$key] : $default;
     }

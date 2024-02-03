@@ -1,7 +1,9 @@
 <!-- ============================================================== -->
 <!-- Start Page Content here -->
 <!-- ============================================================== -->
-
+<?php
+    use App\Core\Session;
+?>
 <div class="content-page">
     <div class="content">
 
@@ -15,8 +17,7 @@
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                                <li class="breadcrumb-item active">Data Tables</li>
+                                <li class="breadcrumb-item active">Danh sách sân bay</li>
                             </ol>
                         </div>
                         <h4 class="page-title"><?= $title ?></h4>
@@ -32,10 +33,10 @@
 
                             <div class="row mb-2">
                                 <div class="col-sm-5">
-                                    <a href="<?= action('admin/them-hang-hang-khong')  ?>" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle me-2"></i> Thêm hãng hàng không</a>
+                                    <a href="<?= action('admin/them-san-bay')  ?>" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle me-2"></i> Thêm sân bay</a>
                                 </div>
 
-                                
+
                                 <div class="col-sm-7">
                                     <div class="text-sm-end">
                                         <button type="button" class="btn btn-success mb-2 me-1"><i class="mdi mdi-cog-outline"></i></button>
@@ -50,6 +51,29 @@
                             <ul class="nav nav-tabs nav-bordered mb-3 mt-2">
 
                             </ul> <!-- end nav-->
+                            <?php
+                            if(Session::has('success')):
+                                ?>
+                                <div class="alert alert-success">
+
+                                    <?= Session::pull('success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
+
+                            <?php
+                            if(Session::has('not_success')):
+                                ?>
+                                <div class="alert alert-danger">
+
+                                    <?= Session::pull('not_success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
 
                             <!-- tab-content  -->
                             <!-- table table-centered w-100 dt-responsive nowrap -->
@@ -59,10 +83,9 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>#</th>
-                                            <th>Tên hãng</th>
-                                            <th>Logo</th>
+                                            <th>Tên sân bay</th>
+                                            <th>Địa diểm</th>
                                             <th>Ngày thêm</th>
-                                            <th>Cập nhật</th>
                                             <th>Thao tác</th>
 
                                         </tr>
@@ -72,30 +95,32 @@
                                     <tbody>
                                     <?php
                                         $i = 0;
-                                        foreach ($list_airline as $item):
-                                        extract($item);
-                                        $i++;
+                                        foreach ($list_airport as $item):
+                                            extract($item);
+                                            $i++;
                                     ?>
                                         <tr>
                                             <td class="fw-bolder"><?= $i ?></td>
                                             <td class="fw-bolder"><?= $name ?></td>
-                                            <td>
-                                                
-                                                <img style="max-width: 90px;" src="<?= asset('admin/assets/images/'). $logo_path ?>" alt="">
-                                                  
+                                            <td class="fw-bolder" style="width: 610px;">
+                                                <?= $location ?>
+
                                             </td>
                                             <td class="fw-bolder"><?= $created_at ?></td>
-                                            <td class="fw-bolder"><?= $updated_at ?></td>
-                                            <td>
 
-                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
+
+                                            <td>
+                                            
+                                                <a href="<?= action('admin/san-bay/cap-nhat/').$id ?>" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">
+                                                    <i class="mdi mdi-pencil"></i>
+                                                </a>
 
                                                 <!-- Danger Header Modal -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
+                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">
                                                     <i class="mdi mdi-delete"></i>
                                                 </button>
 
-                                                <div id="danger-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
+                                                <div id="danger-header-modal-<?=$id?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header bg-danger">
@@ -107,14 +132,14 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="xoa" class="btn btn-danger">Xác nhận</a>
+                                                                <a href="<?= action('admin/san-bay/xoa/').$id ?>" class="btn btn-danger">Xác nhận</a>
                                                             </div>
                                                         </div><!-- /.modal-content -->
                                                     </div><!-- /.modal-dialog -->
                                                 </div><!-- /.modal -->
                                             </td>
                                         </tr>
-                                   <?php
+                                    <?php
 
                                         endforeach;
                                     ?>
@@ -148,6 +173,39 @@
 
     </div> <!-- content -->
 
+
+
+
+    <!-- Modal thêm sân bay -->
+    <div class="modal fade" id="add_airport" tabindex="-1" aria-labelledby="add_airport" aria-hidden="true">
+        <form action="" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="CreateProjectLabel">Thêm sân bay</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-3">
+                        <div class="mb-3">
+                            <label for="projectName" class="form-label">Tên sân bay</label>
+                            <input type="text" class="form-control" id="projectName" placeholder="Tên sân bay...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Địa diểm</label>
+                            <input type="text" class="form-control" id="location" placeholder="Địa diểm...">
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu lại</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 
     <!-- Footer Start -->

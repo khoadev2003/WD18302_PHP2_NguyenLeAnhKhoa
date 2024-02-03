@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Interfaces\CrudInterface;
 use App\Core\Database;
 
-class BaseModel implements CrudInterface
+abstract class BaseModel implements CrudInterface
 {
     protected $table;
     protected $db;
@@ -17,7 +17,7 @@ class BaseModel implements CrudInterface
 
     public function getAll()
     {
-        $query = "SELECT * FROM {$this->table}";
+        $query = "SELECT * FROM {$this->table} ORDER BY id DESC";
         return $this->db->select($query);
     }
 
@@ -55,19 +55,66 @@ class BaseModel implements CrudInterface
         return $this->db->update($query, array_merge(['id' => $id], $data));
     }
 
-    public function remove(int $id)
+    public function remove(int $id): bool
     {
         $query = "DELETE FROM {$this->table} WHERE id = :id";
 
         return $this->db->delete($query, ['id' => $id]);
     }
 
-     //Thêm phương thức cho việc thực hiện truy vấn JOIN
-    public function join($table, $condition, $columns = '*', $type = 'INNER')
+    /**
+     * @param $columns
+     * @param $whereCondition
+     * @return array|false
+     */
+    public function selectWithWhere(string $columns = '*', $whereCondition = null)
     {
-        $query = "SELECT {$columns} FROM {$this->table} {$type} JOIN {$table} ON {$condition}";
+        $whereClause = '';
+        if (!empty($whereCondition)) {
+            $whereClause = "WHERE {$whereCondition}";
+        }
+
+        $query = "SELECT {$columns} FROM {$this->table} {$whereClause}";
         return $this->db->select($query);
     }
+
+    /**
+     * @param $columns
+     * @param $whereField
+     * @param $likeValue
+     * @return array|false
+     */
+
+    /**
+     * @param $columns
+     * @param $whereField
+     * @param $likeValue
+     * @return array|false
+     */
+    public function selectWithLike($columns, $whereField, $likeValue)
+    {
+        $whereClause = '';
+        if (!empty($whereField) && !empty($likeValue)) {
+            $whereClause = "WHERE {$whereField} LIKE '%{$likeValue}%'";
+        }
+
+        $query = "SELECT {$columns} FROM {$this->table} {$whereClause}";
+
+
+        return $this->db->select($query);
+    }
+//
+//    public function countByColumn($column, $value): int
+//    {
+//        $query = "SELECT COUNT(*) AS total FROM {$this->table} WHERE {$column} = :value";
+//        $result = $this->db->select($query, [$column => $value]);
+//
+//        if ($result && isset($result[0]['total'])) {
+//            return (int)$result[0]['total'];
+//        }
+//
+//        return 0;
+//    }
 
     
 
