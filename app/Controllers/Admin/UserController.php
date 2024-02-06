@@ -3,81 +3,116 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
-use App\Core\Request;
 use App\Core\Session;
-use App\Models\User;
 use App\Repositories\UserRepository;
+use App\Core\Request;
+use App\Validator\UserValidator;
+use App\Validator\Validator;
 
-class UserController extends Controller{
-    public $data = [];
-    public $user;
+class UserController extends Controller
+{
+    public $data;
     public $userRepository;
-
 
     public function __construct()
     {
-        $this->user = new User();
         $this->userRepository = new UserRepository();
     }
 
-    public function index() {
+    public function listUser() {
+        Session::set('title_page', 'Danh sách tài khoản');
 
-        $this->render('admin/users/login', $this->data);
+        $this->data['main']= 'admin/users/list';
+
+        $this->data['content'] = [
+            'title' => 'Danh sách tài khoản',
+            'list_user' => $this->userRepository->getAllUser(),
+        ];
+
+        $this->render('layouts/admin_layout', $this->data);
     }
 
-    public function handleLogin()
-    {
+    public function addUser() {
+        Session::set('title_page', 'Thêm tài khoản');
+
+        $this->data['main']= 'admin/users/add';
+
+        $this->data['content'] = [
+            'title' => 'Thêm tài khoản',
+        ];
+
+        $this->render('layouts/admin_layout', $this->data);
+    }
+
+    public function handleAddUser() {
         $request = new Request();
 
-        $count_err = 0;
+        $data = [
+            'fullname' => trim($request->input('fullname')),
+            'username' => trim($request->input('username')),
+            'email' => trim($request->input('email')),
+            'phone' => trim($request->input('phone')),
+            'password' => trim($request->input('password')),
+            'confirm' => trim($request->input('confirm')),
+        ];
 
-        $email = $request->input('email');
-        $password = $request->input('password');
-        $email = trim($email);
-        $password = trim($password);
 
-        if(empty($email)) {
-            Session::set('err_email', 'Không được để trống');
-            $count_err++;
-        }
+        $rules = UserValidator::rules($request->input('username'));
+        $messages = UserValidator::messages();
 
-        if(empty($password)) {
-            Session::set('err_password', 'Không được để trống');
-            $count_err++;
-        }
+        $validator = new Validator($data, $rules, $messages);
 
-        if(!empty($email) && !empty($password)) {
-            if($this->userRepository->login($email, $password)) {
+        if ($validator->validate()) {
 
-                Session::set('username', $email);
-                $this->redirect('admin');
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+            unset($data['confirm']);
+
+            $result = $this->userRepository->createUser($data);
+
+            if($result !== false && $result !== null) {
+                Session::set('success', 'Thêm tài khoản thành công');
+                $this->redirect('admin/tai-khoan/them');
+
             }else {
-                Session::set('err_password', 'Tài khoản hoặc mật khẩu không chính xác');
-                $count_err++;
+                Session::set('not-success', 'Thêm tài khoản thất bại');
+                $this->redirect('admin/tai-khoan/them');
             }
+
+
+        } else {
+            $errors = $validator->errors();
+            foreach ($errors as $field => $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    Session::set('err_'.$field, $errorMessage);
+
+                    // Lưu lại value của input sau khi thông báo lỗi
+                    with(
+                        $field,
+                        $request->input($field)
+                    );
+
+
+                }
+            }
+
+            Session::set('not-success', 'Thêm tài khoản thất bại');
+            $this->redirect('admin/tai-khoan/them');
         }
 
+    }
 
-        if($count_err > 0) {
-            with('email', $email);
-            with('password', $password);
+    public function handleDeleteUser()
+    {
+        $request = new Request();
+        $id_user = $request->get('id');
 
-            $this->redirect('admin/dang-nhap');
+        $result = $this->userRepository->removeUser($id_user);
+        if($result) {
+            Session::set('success', 'Xóa tài khoản thành công!');
+            $this->redirect('admin/tai-khoan');
+        }else {
+            Session::set('not_success', 'Xóa tài khoản thất bại!');
+            $this->redirect('admin/tai-khoan');
         }
-
     }
-
-    public function logout() {
-        $this->userRepository->logout();
-
-        $this->redirect('admin/dang-nhap');
-    }
-
-    public function resetPassword() {
-        
-        $this->view('admin/users/reset-password', $this->data);
-    }
-
-
-
 }

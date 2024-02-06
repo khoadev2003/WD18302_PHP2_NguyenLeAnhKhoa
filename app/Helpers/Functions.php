@@ -26,6 +26,11 @@ function with($key, $value)
     $_SESSION['view_data'][$key] = $value;
 }
 
+function session($key, $default = null)
+{
+    return isset($_SESSION[$key]) ? $_SESSION[$key] : $default;
+}
+
 
 function getError($key, $default = '')
 {

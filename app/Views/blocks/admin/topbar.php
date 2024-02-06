@@ -271,7 +271,7 @@
                                     <img src="<?= asset('admin/assets/images/khoanguyen.jpg')?>" alt="user-image" width="32" class="rounded-circle">
                                 </span>
                                 <span class="d-lg-flex flex-column gap-1 d-none">
-                                    <h5 class="my-0">Khoa Nguyễn</h5>
+                                    <h5 class="my-0"><?= session('username') ?></h5>
                                     <h6 class="my-0 fw-normal">Founder</h6>
                                 </span>
                             </a>

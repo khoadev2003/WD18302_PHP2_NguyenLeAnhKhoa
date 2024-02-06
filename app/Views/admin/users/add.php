@@ -16,7 +16,7 @@ use App\Core\Session;
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
                                 <li class="breadcrumb-item"><a href="<?= action('admin/san-bay') ?>">Danh sách sân bay</a></li>
-                                <li class="breadcrumb-item active">Cập nhật sân bay</li>
+                                <li class="breadcrumb-item active">Thêm sân bay</li>
                             </ol>
                         </div>
                         <h4 class="page-title"><?= $title ?></h4>
@@ -50,11 +50,15 @@ use App\Core\Session;
                             ?>
 
                             <?php
+                            if(Session::has('not-success')):
+                                ?>
+                                <div class="alert alert-danger">
 
-                            foreach ($airport_detail as $item) {
-                                extract($item);
-                            }
+                                    <?= Session::pull('not-success') ?>
 
+                                </div>
+                            <?php
+                            endif
                             ?>
 
                             <div class="tab-content">
@@ -64,23 +68,62 @@ use App\Core\Session;
                                             <div class="col-lg-6">
 
                                                 <div class="mb-3">
-                                                    <label for="name-airline" class="form-label">Tên sân bay</label>
-                                                    <input type="text" name="name" value="<?= old('name', $name) ?>" id="name-airline" class="form-control" placeholder="Nhập tên sân bay">
+                                                    <label for="fullname" class="form-label">Họ và tên</label>
+                                                    <input type="text" name="fullname" value="<?= old('fullname') ?>" id="fullname" class="form-control" placeholder="Nhập họ và tên">
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_name') ?>
+                                                        <?= Session::pull('err_fullname') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="logo-airline" class="form-label">Địa diểm</label>
-                                                    <input type="text" name="location" value="<?= old('location', $location) ?>" id="logo-airline" class="form-control" placeholder="Địa điểm">
+                                                    <label for="username" class="form-label">Tên đăng nhập</label>
+                                                    <input type="text" name="username" value="<?= old('username') ?>" id="username" class="form-control" placeholder="Nhập tên đăng nhập">
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_location') ?>
+                                                        <?= Session::pull('err_username') ?>
+                                                    </span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Email</label>
+                                                    <input type="email" name="email" value="<?= old('email') ?>" id="email" class="form-control" placeholder="Nhập email">
+                                                    <span class="text-danger error">
+                                                        <?= Session::pull('err_email') ?>
+                                                    </span>
+                                                </div>
+
+
+                                                <!-- end d-grid -->
+                                            </div> <!-- end col -->
+
+
+
+                                            <div class="col-lg-6">
+
+                                                <div class="mb-3">
+                                                    <label for="phone" class="form-label">Số điện thoại</label>
+                                                    <input type="text" name="phone" value="<?= old('phone') ?>" id="phone" class="form-control" placeholder="Nhập số điện thoại">
+                                                    <span class="text-danger error">
+                                                    <?= Session::pull('err_phone') ?>
+                                                </span>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="password" class="form-label">Mật khẩu</label>
+                                                    <input type="password" name="password" value="<?= old('password') ?>" id="password" class="form-control" placeholder="Mật khẩu">
+                                                    <span class="text-danger error">
+                                                        <?= Session::pull('err_password') ?>
+                                                    </span>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="confirm_password" class="form-label">Xác nhận mật khẩu</label>
+                                                    <input type="text" name="confirm" value="<?= old('confirm') ?>" id="confirm_password" class="form-control" placeholder="Xác nhận">
+                                                    <span class="text-danger error">
+                                                        <?= Session::pull('err_confirm') ?>
                                                     </span>
                                                 </div>
 
                                                 <!-- Xác nhận thêm vé -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#success-header-modal">
-                                                    Cập nhật sân bay
+                                                    Thêm tài khoản
                                                 </button>
 
                                                 <div id="success-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="success-header-modalLabel" aria-hidden="true">
@@ -91,7 +134,7 @@ use App\Core\Session;
                                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Bạn có chắc chắn muốn thêm sân bay?
+                                                                Bạn có chắc chắn muốn thêm tài khoản?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
@@ -101,9 +144,7 @@ use App\Core\Session;
                                                     </div><!-- /.modal-dialog -->
                                                 </div><!-- /.modal -->
 
-                                                <a class="btn btn-danger" href="<?= action('admin/san-bay')?>">
-                                                    Danh sách
-                                                </a>
+                                                <a class="btn btn-danger" href="<?= action('admin/tai-khoan') ?>">Danh sách</a>
 
                                                 <!-- end d-grid -->
                                             </div> <!-- end col -->
@@ -113,10 +154,6 @@ use App\Core\Session;
 
 
 
-
-
-
-                                            </div> <!-- end col -->
                                         </div>
                                         <!-- end row-->
                                     </form>

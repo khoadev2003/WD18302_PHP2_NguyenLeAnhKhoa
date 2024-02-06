@@ -49,5 +49,27 @@ class UserRepository implements UserRepositoryInterface
     }
 
 
+    public function getAllUser()
+    {
+        return $this->userModel->getAll();
+    }
+
+    /**
+     * @param array $data
+     * @return false|mixed|string
+     */
+    public function createUser(array $data) {
+        return $this->userModel->create($data);
+
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function removeUser(int $id): bool
+    {
+        return $this->userModel->remove($id);
+    }
 
 }

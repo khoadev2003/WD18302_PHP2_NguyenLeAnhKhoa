@@ -81,7 +81,7 @@
                         </li>
 
                         <li class="side-nav-item">
-                            <a href="#" class="side-nav-link">
+                            <a href="<?= action('admin/tai-khoan') ?>" class="side-nav-link">
                                 <i class="uil-user"></i>
                                 <span> Users </span>
                             </a>

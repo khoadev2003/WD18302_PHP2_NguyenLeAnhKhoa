@@ -1,5 +1,6 @@
 <?php 
 
+use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\UserController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\TicketController;
@@ -13,10 +14,15 @@ use App\Core\Route;
 Route::get('/',[DashboardController::class,'index']);
 Route::get('/admin',[DashboardController::class,'index']);
 
-Route::get('/admin/dang-nhap',[UserController::class,'index']);
-Route::post('/admin/dang-nhap',[UserController::class,'handleLogin']);
-Route::get('/admin/quen-mat-khau',[UserController::class,'resetPassword']);
-Route::get('/admin/dang-xuat',[UserController::class,'logout']);
+Route::get('/admin/dang-nhap',[LoginController::class,'index']);
+Route::post('/admin/dang-nhap',[LoginController::class,'handleLogin']);
+Route::get('/admin/quen-mat-khau',[LoginController::class,'resetPassword']);
+Route::get('/admin/dang-xuat',[LoginController::class,'logout']);
+
+Route::get('/admin/tai-khoan',[UserController::class,'listUser']);
+Route::get('/admin/tai-khoan/them',[UserController::class,'addUser']);
+Route::post('/admin/tai-khoan/them',[UserController::class,'handleAddUser']);
+Route::get('/admin/tai-khoan/xoa',[UserController::class,'handleDeleteUser']);
 
 
 Route::get('/admin/ve',[TicketController::class,'index']);

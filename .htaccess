@@ -7,6 +7,10 @@ RewriteRule ^admin/dang-nhap$ index.php?url=admin/dang-nhap [L]
 RewriteRule ^admin/dang-xuat$ index.php?url=admin/dang-xuat [L]
 RewriteRule ^admin/quen-mat-khau$ index.php?url=admin/quen-mat-khau [L]
 
+RewriteRule ^admin/tai-khoan$ index.php?url=admin/tai-khoan [L]
+RewriteRule ^admin/tai-khoan/them$ index.php?url=admin/tai-khoan/them [L]
+RewriteRule ^admin/tai-khoan/xoa/([0-9]+)$ index.php?url=admin/tai-khoan/xoa&id=$1 [L]
+
 RewriteRule ^test/([0-9]+)/([0-9]+)/([A-Za-z0-9-]+)$ index.php?url=test&id=$1&slug=$2&slug2=$3 [L]
 
 RewriteRule ^admin/ve$ index.php?url=admin/ve [L]
