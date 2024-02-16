@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Core\Request;
 use App\Core\Session;
 use App\Repositories\UserRepository;
-use App\Core\Request;
-use App\Validator\UserValidator;
+use App\Http\Requests\UserRequest;
 use App\Validator\Validator;
 
 class UserController extends Controller
@@ -54,11 +54,11 @@ class UserController extends Controller
             'phone' => trim($request->input('phone')),
             'password' => trim($request->input('password')),
             'confirm' => trim($request->input('confirm')),
+//            'image' => $_FILES['image'],
         ];
 
-
-        $rules = UserValidator::rules($request->input('username'));
-        $messages = UserValidator::messages();
+        $rules = UserRequest::rules();
+        $messages = UserRequest::messages();
 
         $validator = new Validator($data, $rules, $messages);
 
@@ -85,17 +85,20 @@ class UserController extends Controller
                 foreach ($errorMessages as $errorMessage) {
                     Session::set('err_'.$field, $errorMessage);
 
-                    // Lưu lại value của input sau khi thông báo lỗi
-                    with(
-                        $field,
-                        $request->input($field)
-                    );
-
-
                 }
             }
 
-            Session::set('not-success', 'Thêm tài khoản thất bại');
+            // Lưu lại value của input sau khi thông báo lỗi
+            foreach ($data as $field => $msg) {
+
+                with(
+                    $field,
+                    $request->input($field)
+                );
+            }
+
+
+            Session::set('not-success', 'Thêm tài khoản không thành công vui lòng kiểm tra lại !');
             $this->redirect('admin/tai-khoan/them');
         }
 

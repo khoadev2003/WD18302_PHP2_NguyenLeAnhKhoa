@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
 use App\Models\Airport;
-use App\Models\Flight;
-use App\Models\Airline;
 use App\Repositories\AirportRepository;
 use App\Repositories\UserRepository;
 use App\Validator\AirportValidator;

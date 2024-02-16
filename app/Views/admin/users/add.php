@@ -15,7 +15,7 @@ use App\Core\Session;
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                <li class="breadcrumb-item"><a href="<?= action('admin/san-bay') ?>">Danh sách sân bay</a></li>
+                                <li class="breadcrumb-item"><a href="<?= action('admin/tai-khoan') ?>">Danh sách tài khoản</a></li>
                                 <li class="breadcrumb-item active">Thêm sân bay</li>
                             </ol>
                         </div>
@@ -63,7 +63,7 @@ use App\Core\Session;
 
                             <div class="tab-content">
                                 <div class="tab-pane show active" id="input-types-preview">
-                                    <form action="" method="post">
+                                    <form action="" method="post" enctype="multipart/form-data" >
                                         <div class="row">
                                             <div class="col-lg-6">
 
@@ -105,9 +105,15 @@ use App\Core\Session;
                                                 </span>
                                                 </div>
 
+
                                                 <div class="mb-3">
                                                     <label for="password" class="form-label">Mật khẩu</label>
-                                                    <input type="password" name="password" value="<?= old('password') ?>" id="password" class="form-control" placeholder="Mật khẩu">
+                                                    <div class="input-group input-group-merge">
+                                                        <input type="password" name="password" value="<?= old('password') ?>" id="password" class="form-control" placeholder="Mật khẩu">
+                                                        <div class="input-group-text" data-password="false">
+                                                            <span class="password-eye"></span>
+                                                        </div>
+                                                    </div>
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_password') ?>
                                                     </span>
@@ -115,11 +121,24 @@ use App\Core\Session;
 
                                                 <div class="mb-3">
                                                     <label for="confirm_password" class="form-label">Xác nhận mật khẩu</label>
-                                                    <input type="text" name="confirm" value="<?= old('confirm') ?>" id="confirm_password" class="form-control" placeholder="Xác nhận">
+                                                    <div class="input-group input-group-merge">
+                                                        <input type="password" name="confirm" value="<?= old('confirm') ?>" id="confirm_password" class="form-control" placeholder="Xác nhận mật khẩu">
+                                                        <div class="input-group-text" data-password="false">
+                                                            <span class="password-eye"></span>
+                                                        </div>
+                                                    </div>
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_confirm') ?>
                                                     </span>
                                                 </div>
+
+<!--                                                <div class="mb-3">-->
+<!--                                                    <label for="image" class="form-label">Hình ảnh</label>-->
+<!--                                                    <input type="file" name="image" id="image" class="form-control" placeholder="image">-->
+<!--                                                    <span class="text-danger error">-->
+<!--                                                        --><?php //= Session::pull('err_image') ?>
+<!--                                                    </span>-->
+<!--                                                </div>-->
 
                                                 <!-- Xác nhận thêm vé -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#success-header-modal">
@@ -182,7 +201,7 @@ use App\Core\Session;
                 <div class="col-md-6">
                     <script>
                         document.write(new Date().getFullYear())
-                    </script> © Hyper - Coderthemes.com
+                    </script> © Hyper - Đặt vé online
                 </div>
                 <div class="col-md-6">
                     <div class="text-md-end footer-links d-none d-md-block">

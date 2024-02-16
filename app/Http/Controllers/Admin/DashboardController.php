@@ -1,8 +1,7 @@
 <?php
-namespace App\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Core\Controller;
-use App\Models\User;
 use App\Repositories\UserRepository;
 
 class DashboardController extends Controller{

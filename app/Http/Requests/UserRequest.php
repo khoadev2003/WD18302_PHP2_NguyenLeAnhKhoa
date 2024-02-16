@@ -1,32 +1,21 @@
 <?php
 
-namespace App\Validator;
+namespace App\Http\Requests;
 
-use App\Core\Request;
-use App\Validator\Validator;
-
-class UserValidator
+class UserRequest
 {
-    public function test()
-    {
-        $rules = [
-            'username' => 'required|unique:users|min:3|max:20',
-            'email' => 'required|email|unique:users,email,' . $currentUserEmail, // $currentUserEmail là giá trị ngoại trừ
-            // Các quy tắc khác...
-        ];
-    }
-
 
     public static function rules(): array
     {
 
         return [
-            'fullname' => 'required|min:3|max:255|alphabet',
-            'username' => 'required|min:3|max:20|unique:users',
+            'fullname' => 'required|min:3|max:255|alphabet|not_same:username',
+            'username' => 'required|min:3|max:20|unique:users|username',
             'email' => 'required|email|unique:users',
             'phone' => 'required|phone|unique:users',
-            'password' => 'required|min:5|max:255',
+            'password' => 'required|min:5|max:255|strong_password',
             'confirm' => 'required|same:password',
+//            'image' => 'required|file_format:jpg,png',
         ];
 
     }
@@ -38,13 +27,15 @@ class UserValidator
                 'required' => 'Họ tên không để trống',
                 'min' => 'Họ tên ít nhất 6 ký tự',
                 'max' => 'Họ tên tối đa 255 ký tự',
-                'alphabet' =>'Họ tên chỉ được nhập kiểu chữ'
+                'alphabet' =>'Họ tên chỉ được nhập kiểu chữ',
+                'not_same' => 'Họ tên không được trùng tên đăng nhập'
             ],
             'username' => [
                 'unique' => 'Tài khoản đã tồn tại',
                 'required' => 'Tài khoản không để trống',
                 'min' => 'Tên dăng nhập ít nhất 3 ký tự',
-                'max' => 'Tên dăng nhập tối đa 20 ký tự'
+                'max' => 'Tên dăng nhập tối đa 20 ký tự',
+                'username' => 'Tên đăng nhập chỉ nhập ( a - z và 0- 9 )'
             ],
             'email' => [
                 'required' => 'Email không để trống.',
@@ -61,11 +52,15 @@ class UserValidator
                 'max' => 'Tối thiểu 255',
                 'min' => 'Mật khẩu 5 ký tự trở lên',
                 'required' => 'Mật khẩu không để trống.',
+                'strong_password' => 'Mật khẩu phải chứa (trên 7 ký tự, 1 chữ hoa, 1 số)',
             ],
             'confirm' => [
                 'required' => 'Xác nhận mật khẩu không để trống.',
                 'same' => 'Xác nhận mật khẩu không trùng khớp',
-            ]
+            ],
+//            'image' => [
+//                'file_format' => 'Định dạng ảnh không hợp lệ (PNG, JPG)',
+//            ]
         ];
     }
 }

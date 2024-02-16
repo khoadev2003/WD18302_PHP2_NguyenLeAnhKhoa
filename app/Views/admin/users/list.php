@@ -110,36 +110,54 @@ use App\Core\Session;
                                             <td class="fw-bolder"><?= $phone ?></td>
                                             <td class="fw-bolder"><?= $username ?></td>
 
+                                            <?php
+                                                if($role !== 0) :
+                                            ?>
+
 
                                             <td>
 
-                                                <a href="<?= action('admin/tai-khoan/cap-nhat/').$id ?>" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">
-                                                    <i class="mdi mdi-pencil"></i>
-                                                </a>
+    <!--                                                <a href="--><?php //= action('admin/tai-khoan/cap-nhat/').$id ?><!--" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">-->
+    <!--                                                    <i class="mdi mdi-pencil"></i>-->
+    <!--                                                </a>-->
 
-                                                <!-- Danger Header Modal -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">
-                                                    <i class="mdi mdi-delete"></i>
-                                                </button>
+                                                    <!-- Danger Header Modal -->
+                                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">
+                                                        <i class="mdi mdi-delete"></i>
+                                                    </button>
 
-                                                <div id="danger-header-modal-<?=$id?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header bg-danger">
-                                                                <h4 class="modal-title text-light" id="danger-header-modalLabel">Xác nhận</h4>
-                                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="<?= action('admin/tai-khoan/xoa/').$id ?>" class="btn btn-danger">Xác nhận</a>
-                                                            </div>
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div><!-- /.modal -->
-                                            </td>
+                                                    <div id="danger-header-modal-<?=$id?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-danger">
+                                                                    <h4 class="modal-title text-light" id="danger-header-modalLabel">Xác nhận</h4>
+                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    Bạn có chắc chắn muốn xóa?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
+                                                                    <a href="<?= action('admin/tai-khoan/xoa/').$id ?>" class="btn btn-danger">Xác nhận</a>
+                                                                </div>
+                                                            </div><!-- /.modal-content -->
+                                                        </div><!-- /.modal-dialog -->
+                                                    </div><!-- /.modal -->
+                                                </td>
+
+                                            <?php
+                                                else:
+                                            ?>
+
+                                                <td>
+                                                    <a href="#" class="btn btn-outline-dark"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Quản trị viên">
+                                                        <i class="mdi mdi-shield"></i>
+                                                    </a>
+                                                </td>
+                                            <?php
+                                                endif;
+                                            ?>
                                         </tr>
                                     <?php
 

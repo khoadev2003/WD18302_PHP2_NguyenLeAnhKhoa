@@ -1,19 +1,15 @@
 <?php
 
 
-namespace App\Controllers\Admin;
-
-use App\Core\Session;
-use App\Core\Request;
-use App\Core\Response;
-use App\Models\Flight;
-use App\Models\User;
-use App\Repositories\UserRepository;
-use DateTime;
-use App\Validator\TicketValidator;
+namespace App\Http\Controllers\Admin;
 
 use App\Core\Controller;
-use Dotenv\Validator;
+use App\Core\Request;
+use App\Core\Session;
+use App\Models\Flight;
+use App\Repositories\UserRepository;
+use App\Validator\TicketValidator;
+use DateTime;
 
 class TicketController extends Controller{
     public $data = [];

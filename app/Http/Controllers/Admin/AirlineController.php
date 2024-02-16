@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Core\Request;

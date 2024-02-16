@@ -4,10 +4,11 @@ namespace App\Helpers;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv as Dotenv;
 
 class Mailer
 {
-    private $_mail;
+    protected $mail;
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
@@ -16,19 +17,22 @@ class Mailer
         $this->config();
     }
 
-    private function config()
+    public function config()
     {
+        $dotenv = Dotenv::createImmutable(__DIR__. '/../../');
+        $dotenv->load();
+
         // Cấu hình SMTP hoặc các thiết lập gửi email khác ở đây
         $this->mail->isSMTP();
-        $this->mail->Host = 'smtp.gmail.com';
+        $this->mail->Host = $_ENV['MAIL_HOST'];
         $this->mail->SMTPAuth = true;
-        $this->mail->Username = 'nguyenleanhkhoa25866@gmail.com';
-        $this->mail->Password = 'atir avas dova miyp';
-        $this->mail->SMTPSecure = 'tls';
-        $this->mail->Port = 587;
+        $this->mail->Username = $_ENV['MAIL_USERNAME'];
+        $this->mail->Password = $_ENV['MAIL_PASSWORD'];
+        $this->mail->SMTPSecure = $_ENV['MAIL_ENCRYPTION'];
+        $this->mail->Port = $_ENV['MAIL_PORT'];
     }
 
-    public function sendMail($to, $subject, $body)
+    public function sendMail($to, $subject, $body): bool
     {
         try {
             $this->mail->setFrom('your_email@example.com', 'Your Name');

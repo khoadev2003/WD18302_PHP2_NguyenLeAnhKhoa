@@ -1,14 +1,12 @@
-<?php 
-
-use App\Controllers\Admin\LoginController;
-use App\Controllers\Admin\UserController;
-use App\Controllers\Admin\DashboardController;
-use App\Controllers\Admin\TicketController;
-use App\Controllers\Admin\AirportController;
-use App\Controllers\Admin\AirlineController;
-
+<?php
 
 use App\Core\Route;
+use App\Http\Controllers\Admin\AirlineController;
+use App\Http\Controllers\Admin\AirportController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\TicketController;
+use App\Http\Controllers\Admin\UserController;
 
 
 Route::get('/',[DashboardController::class,'index']);

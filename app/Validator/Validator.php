@@ -21,27 +21,6 @@ class Validator
         $this->db = new Database();
     }
 
-//    public function validate(): bool {
-//        foreach ($this->rules as $field => $rule) {
-//            $rules = explode('|', $rule);
-//
-//            foreach ($rules as $singleRule) {
-//                $ruleParts = explode(':', $singleRule);
-//                $ruleName = $ruleParts[0];
-//                $param = isset($ruleParts[1]) ? $ruleParts[1] : null;
-//
-//                // Validate rule
-//                $valid = $this->$ruleName($field, $param);
-//
-//                if (!$valid) {
-//                    $errorMessage = $this->messages[$field][$ruleName] ?? $this->defaultMessage($ruleName, $field, $param);
-//                    $this->errors[$field][] = $errorMessage;
-//                }
-//            }
-//        }
-//
-//        return empty($this->errors);
-//    }
 
 
     public function validate(): bool {
@@ -108,8 +87,14 @@ class Validator
     }
 
     protected function alphabet($field): bool {
-        // Sử dụng biểu thức chính quy để kiểm tra xem trường không chứa ký tự đặc biệt
-        return isset($this->data[$field]) && preg_match('/^[a-zA-Z]+$/', $this->data[$field]);
+        // Biểu thức chính quy để kiểm tra xem trường không chứa ký tự đặc biệt
+//        return isset($this->data[$field]) && preg_match('/^[a-zA-Z ]+$/', $this->data[$field]);
+        return isset($this->data[$field]) && preg_match('/^[\p{L} ]+$/u', $this->data[$field]);
+    }
+
+    protected function username($field): bool {
+        // Sử dụng biểu thức chính quy để kiểm tra xem tên đăng nhập chỉ chứa các ký tự a-z và số từ 0-9
+        return isset($this->data[$field]) && preg_match('/^[a-z0-9]+$/', $this->data[$field]);
     }
 
     protected function phone($field):bool {
@@ -124,13 +109,69 @@ class Validator
         return isset($this->data[$field]) && isset($this->data[$confirmField]) && $this->data[$field] === $this->data[$confirmField];
     }
 
+    /**
+     * Method check 2 giá trị không được trùng nhau
+     * @param $field
+     * @param $confirmField
+     * @return bool
+     */
+    protected function not_same($field, $confirmField):bool {
+        return !$this->same($field, $confirmField);
+    }
+
+
+    /**
+     * @param $field
+     * @return bool
+     */
+    protected function strong_password($field): bool {
+        if (!isset($this->data[$field])) {
+            return false;
+        }
+
+        // Kiểm tra xem mật khẩu có ít nhất 8 ký tự, và chứa ít nhất một chữ hoa, một chữ thường, và một số
+        $password = $this->data[$field];
+        $containsUpperCase = preg_match('/[A-Z]/', $password);
+        $containsLowerCase = preg_match('/[a-z]/', $password);
+        $containsNumber = preg_match('/\d/', $password);
+        $isValidLength = strlen($password) >= 8;
+
+        return $containsUpperCase && $containsLowerCase && $containsNumber && $isValidLength;
+    }
+
+
+    /**
+     * @param $field
+     * @param $formats
+     * @return bool
+     */
+    protected function file_format($field, $formats): bool {
+        if (!isset($this->data[$field])) {
+            return false;
+        }
+
+        $filePath = $this->data[$field]['name']; // Lấy tên tệp từ mảng dữ liệu
+
+        // Chuyển đổi đối số định dạng thành một mảng nếu nó không phải là một mảng
+        if (!is_array($formats)) {
+            $formats = explode(',', $formats);
+
+        }
+
+        // Lấy phần mở rộng của tệp
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        // Kiểm tra xem phần mở rộng có tồn tại trong danh sách định dạng được chấp nhận không
+        return in_array($extension, $formats);
+    }
+
 
     protected function unique($field, $table): bool {
         // Kiểm tra xem giá trị của trường đã tồn tại trong dữ liệu hay không
         return !isset($this->data[$field]) || $this->checkUnique($field, $this->data[$field], $table);
     }
 
-    // Phương thức để kiểm tra tính duy nhất của trường trong cơ sở dữ liệu
+//     Phương thức để kiểm tra tính duy nhất của trường trong cơ sở dữ liệu
     protected function checkUnique($field, $value, $table): bool {
         // Thực hiện truy vấn SQL để kiểm tra tính duy nhất của giá trị trong bảng cơ sở dữ liệu được truyền vào
         $query = "SELECT COUNT(*) FROM $table WHERE $field = :value";
@@ -140,6 +181,7 @@ class Validator
         $count = $result[0]['COUNT(*)']; // Lấy số lượng hàng từ kết quả truy vấn
         return $count === 0; // Trả về true nếu không có giá trị trùng lặp, ngược lại trả về false
     }
+
 
 
     protected function defaultMessage($rule, $field, $param = null): string {
@@ -152,6 +194,7 @@ class Validator
             'email' => "Trường $field phải là địa chỉ email hợp lệ.",
             'unique' => "Trường $field đã tồn tại.",
             'numeric' => "Trường $field chỉ được nhập số.",
+            'file_format' => "Trường $field không đúng định dạng.",
         ];
 
         return $defaultMessages[$rule];
