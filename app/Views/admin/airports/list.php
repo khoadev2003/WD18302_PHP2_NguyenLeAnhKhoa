@@ -64,11 +64,11 @@
                             ?>
 
                             <?php
-                            if(Session::has('not_success')):
+                            if(Session::has('not-success')):
                                 ?>
                                 <div class="alert alert-danger">
 
-                                    <?= Session::pull('not_success') ?>
+                                    <?= Session::pull('not-success') ?>
 
                                 </div>
                             <?php

@@ -114,7 +114,7 @@ class UserController extends Controller
             Session::set('success', 'Xóa tài khoản thành công!');
             $this->redirect('admin/tai-khoan');
         }else {
-            Session::set('not_success', 'Xóa tài khoản thất bại!');
+            Session::set('not-success', 'Xóa tài khoản thất bại!');
             $this->redirect('admin/tai-khoan');
         }
     }

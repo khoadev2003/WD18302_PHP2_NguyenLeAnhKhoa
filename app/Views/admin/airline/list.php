@@ -1,6 +1,6 @@
-<!-- ============================================================== -->
-<!-- Start Page Content here -->
-<!-- ============================================================== -->
+<?php
+use App\Core\Session;
+?>
 
 <div class="content-page">
     <div class="content">
@@ -53,6 +53,30 @@
 
                             </ul> <!-- end nav-->
 
+                            <?php
+                            if(Session::has('success')):
+                                ?>
+                                <div class="alert alert-success">
+
+                                    <?= Session::pull('success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
+
+                            <?php
+                            if(Session::has('not-success')):
+                                ?>
+                                <div class="alert alert-danger">
+
+                                    <?= Session::pull('not-success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
+
                             <!-- tab-content  -->
                             <!-- table table-centered w-100 dt-responsive nowrap -->
                             <div class="tab-content table-responsive">
@@ -83,7 +107,7 @@
                                             <td class="fw-bolder"><?= $name ?></td>
                                             <td>
                                                 
-                                                <img style="max-width: 90px;" src="<?= asset('admin/assets/images/'). $logo_path ?>" alt="">
+                                                <img style="max-width: 90px;" src="<?= asset('uploads/'). $logo_path ?>" alt="">
                                                   
                                             </td>
                                             <td class="fw-bolder"><?= $created_at ?></td>
@@ -93,11 +117,11 @@
                                                 <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
 
                                                 <!-- Danger Header Modal -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal">
+                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">
                                                     <i class="mdi mdi-delete"></i>
                                                 </button>
 
-                                                <div id="danger-header-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
+                                                <div id="danger-header-modal-<?=$id?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="danger-header-modalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header bg-danger">
@@ -109,7 +133,7 @@
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="xoa" class="btn btn-danger">Xác nhận</a>
+                                                                <a href="<?= action('admin/hang-khong/xoa/').$id ?>" class="btn btn-danger">Xác nhận</a>
                                                             </div>
                                                         </div><!-- /.modal-content -->
                                                     </div><!-- /.modal-dialog -->

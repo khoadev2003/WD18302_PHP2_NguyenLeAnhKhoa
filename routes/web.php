@@ -30,6 +30,7 @@ Route::post('/admin/them-ve',[TicketController::class,'handleAddTicket']);
 Route::get('/admin/hang-hang-khong',[AirlineController::class,'index']);
 Route::get('/admin/them-hang-hang-khong',[AirlineController::class,'addAirline']);
 Route::post('/admin/them-hang-hang-khong',[AirlineController::class,'handleAddAirline']);
+Route::get('/admin/hang-khong/xoa',[AirlineController::class,'handleDeleteAirline']);
 
 Route::get('/admin/san-bay',[AirportController::class,'index']);
 Route::get('/admin/them-san-bay',[AirportController::class,'addAirport']);

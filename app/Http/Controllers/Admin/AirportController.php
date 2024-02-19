@@ -7,11 +7,13 @@ use App\Core\Request;
 use App\Core\Session;
 use App\Models\Airport;
 use App\Repositories\AirportRepository;
+use App\Repositories\FlightsRepository;
 use App\Repositories\UserRepository;
 use App\Validator\AirportValidator;
 
 class AirportController extends Controller{
     public $airportRepository;
+    public $flightRepository;
     public $airportValidator;
     public $request;
     public $data = [];
@@ -23,6 +25,7 @@ class AirportController extends Controller{
 
         $this->request = new Request();
         $this->airportRepository = new AirportRepository();
+        $this->flightRepository = new FlightsRepository();
         $this->airportValidator = new AirportValidator();
     }
 
@@ -204,13 +207,22 @@ class AirportController extends Controller{
     public function handleDeleteAirport() {
         $id_airport = $this->request->get('id');
 
+        $departureExist = $this->flightRepository->getFlightsByDepartureId($id_airport);
+        $arrivalExist = $this->flightRepository->getFlightsByArrivalId($id_airport);
+
+        if(count($departureExist) > 0
+            && count($arrivalExist) > 0)
+        {
+            Session::set('not-success', 'Không thể xóa sân bay vì sân bay đã tồn tại trong vé máy bay!!!');
+            $this->redirect('admin/san-bay');
+        }
 
         $result = $this->airportRepository->removeAirport($id_airport);
         if($result) {
             Session::set('success', 'Xóa sân bay thành công!');
             $this->redirect('admin/san-bay');
         }else {
-            Session::set('not_success', 'Xóa sân bay thất bại!');
+            Session::set('not-success', 'Xóa sân bay thất bại!');
             $this->redirect('admin/san-bay');
         }
     }

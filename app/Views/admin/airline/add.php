@@ -51,9 +51,21 @@
                             endif
                             ?>
 
+                            <?php
+                            if(Session::has('not-success')):
+                                ?>
+                                <div class="alert alert-danger">
+
+                                    <?= Session::pull('not-success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
+
                             <div class="tab-content">
                                 <div class="tab-pane show active" id="input-types-preview">
-                                    <form action="" method="post">
+                                    <form action="" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-lg-6">
 
@@ -66,9 +78,9 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="logo-airline" class="form-label">Logo</label>
-                                                    <input type="file" name="logo" value="<?= old('logo') ?>" id="logo-airline" class="form-control" placeholder="Chọn logo">
+                                                    <input type="file" name="logo_path" id="logo-airline" class="form-control" placeholder="Chọn logo">
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_logo') ?>
+                                                        <?= Session::pull('err_logo_path') ?>
                                                     </span>
                                                 </div>
 

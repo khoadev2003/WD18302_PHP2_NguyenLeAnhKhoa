@@ -18,6 +18,7 @@ RewriteRule ^admin/them-ve$ index.php?url=admin/them-ve [L]
 
 RewriteRule ^admin/hang-hang-khong$ index.php?url=admin/hang-hang-khong [L]
 RewriteRule ^admin/them-hang-hang-khong$ index.php?url=admin/them-hang-hang-khong [L]
+RewriteRule ^admin/hang-khong/xoa/([0-9]+)$ index.php?url=admin/hang-khong/xoa&id=$1 [L]
 
 RewriteRule ^admin/san-bay$ index.php?url=admin/san-bay [L]
 RewriteRule ^admin/them-san-bay$ index.php?url=admin/them-san-bay [L]

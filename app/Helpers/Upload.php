@@ -48,17 +48,3 @@ class Upload
         return $this->errors;
     }
 }
-
-// Sử dụng
-$uploadDirectory = 'uploads';
-$allowedExtensions = ['jpg', 'jpeg', 'png'];
-
-$uploader = new Upload($_FILES['file'], $uploadDirectory, $allowedExtensions);
-if ($uploader->upload()) {
-    echo "Tải lên tệp thành công.";
-} else {
-    $errors = $uploader->errors();
-    foreach ($errors as $error) {
-        echo "Lỗi: $error<br>";
-    }
-}

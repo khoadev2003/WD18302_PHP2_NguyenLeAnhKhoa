@@ -22,7 +22,11 @@ class Validator
     }
 
 
-
+    /**
+     * Method kiểm tra các value của các trường input
+     * @return bool
+     *
+     */
     public function validate(): bool {
         foreach ($this->rules as $field => $rule) {
             $rules = explode('|', $rule);

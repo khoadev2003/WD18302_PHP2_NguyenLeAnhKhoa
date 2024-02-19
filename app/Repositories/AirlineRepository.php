@@ -27,4 +27,14 @@ class AirlineRepository implements AirlineRepositoryInterface
     {
         return $this->airlineModel->selectWithLike($columns, $whereField, $likeValue);
     }
+
+    public function createAirline(array $data) {
+        return $this->airlineModel->create($data);
+
+    }
+
+    public function removeAirline(int $id): bool
+    {
+        return $this->airlineModel->remove($id);
+    }
 }
