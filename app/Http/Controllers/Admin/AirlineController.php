@@ -128,8 +128,102 @@ class AirlineController extends Controller{
 
     }
 
-    public function update() {
-        
+    public function updateAirline() {
+        Session::set('title_page', 'Cập nhật sân bay');
+
+        $request = new Request();
+        $airlineId = $request->get('id');
+
+        $this->data['main']= 'admin/airline/update';
+
+        $this->data['content']= [
+            'title' => 'Cập nhật hãng hàng không',
+            'airline_detail' => $this->airlineRepository->getAirlineById($airlineId),
+        ];
+
+        $this->render('layouts/admin_layout', $this->data);
+    }
+
+    public function handleUpdateAirline()
+    {
+        $request = new Request();
+        $airlineId = $request->get('id');
+
+        if(!empty($_FILES['logo_path']['name'])) {
+            $data = [
+                'name' => $request->input('name'),
+                'logo_path' => $_FILES['logo_path'],
+            ];
+        }else {
+            $data = [
+                'name' => $request->input('name'),
+            ];
+        }
+
+        $rules = AirlineRequest::rulesUpdate();
+        $messages = AirlineRequest::messagesUpdate();
+
+        $validator = new Validator($data, $rules, $messages);
+
+
+        if ($validator->validate()) {
+
+            // Nếu có cập nhật ảnh
+            if(!empty($_FILES['logo_path']['name'])) {
+
+                $uploadDirectory = 'public/uploads';
+                $allowedExtensions = ['jpg', 'jpeg', 'png'];
+                $uploader = new Upload($_FILES['logo_path'], $uploadDirectory, $allowedExtensions);
+                if(!$uploader->upload()) {
+                    $errors = $uploader->errors();
+                    $err= '';
+                    foreach ($errors as $error) {
+                        $err .= $error;
+                        Session::set('not-success', $err);
+                        $this->redirect('admin/hang-khong/cap-nhat/'. $airlineId);
+                    }
+                }
+
+                $data['logo_path'] = $data['logo_path']['name'];
+            }
+
+            // Handle update
+            $result = $this->airlineRepository->updateAirline($airlineId, $data);
+
+            if($result !== false && $result !== null) {
+                Session::set('success', 'Cập nhật thành công');
+                $this->redirect('admin/hang-khong/cap-nhat/'. $airlineId);
+
+            }else {
+                Session::set('not-success', 'Cập nhật không thành công !');
+                $this->redirect('admin/hang-khong/cap-nhat/'. $airlineId);
+            }
+
+
+        }
+        else {
+            $errors = $validator->errors();
+            foreach ($errors as $field => $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    Session::set('err_'.$field, $errorMessage);
+
+                }
+            }
+
+            // Lưu lại value của input sau khi thông báo lỗi
+            foreach ($data as $field => $msg) {
+
+                with(
+                    $field,
+                    $request->input($field)
+                );
+            }
+
+
+            Session::set('not-success', 'Cập nhật thành công vui lòng kiểm tra lại !');
+            $this->redirect('admin/hang-khong/cap-nhat/' .$airlineId);
+        }
+
     }
 
     public function handleDeleteAirline() {

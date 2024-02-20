@@ -30,4 +30,27 @@ class AirlineRequest
         ];
 
     }
+
+    public static function rulesUpdate(): array
+    {
+
+        return [
+            'name' => 'required|max:255|unique:airlines',
+        ];
+
+    }
+
+    public static function messagesUpdate(): array
+    {
+
+        return [
+            'name' => [
+                'required' => 'Tên hãng không để trống!',
+                'max' => 'Tên hãng tối đa 255 ký tự!',
+                'unique' => 'Tên hãng đã tồn tại',
+            ],
+
+        ];
+
+    }
 }

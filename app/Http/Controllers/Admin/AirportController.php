@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
+use App\Http\Requests\AirportRequest;
 use App\Models\Airport;
 use App\Repositories\AirportRepository;
 use App\Repositories\FlightsRepository;
 use App\Repositories\UserRepository;
 use App\Validator\AirportValidator;
+use App\Validator\Validator;
 
 class AirportController extends Controller{
     public $airportRepository;
@@ -127,45 +129,97 @@ class AirportController extends Controller{
         $this->render('layouts/admin_layout', $this->data);
     }
 
-    public function handleUpdateAirport() {
-        $id_airport = $this->request->get('id');
+//    public function handleUpdateAirport() {
+//        $id_airport = $this->request->get('id');
+//
+//        $name_airport = $this->request->input('name');
+//        $location = $this->request->input('location');
+//
+//        $count_err = $this->validateAirport($name_airport, $location);
+//
+//        if ($count_err > 0) {
+//            with('name', $name_airport);
+//            with('location', $location);
+//
+//            $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
+//
+//        } else {
+//            // Handle updating airport
+//            $data = [
+//                'name' => $name_airport,
+//                'location' => $location,
+//                'updated_at' => date('Y-m-d H:i:s'),
+//            ];
+//
+//            $result = $this->airportRepository->updateAirport($id_airport, $data);
+//
+//            // Handle the result
+//            if($this->handleResult($result)) {
+//                Session::set('success', 'Cập nhật thành công');
+//                $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
+//
+//            }else {
+//                Session::set('not_success', 'Cập nhật thất bại');
+//                $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
+//
+//            }
+//
+//        }
+//
+//    }
 
-        $name_airport = $this->request->input('name');
-        $location = $this->request->input('location');
+    public function handleUpdateAirport()
+    {
+        $request = new Request();
+        $airportId = $this->request->get('id');
 
-        $count_err = $this->validateAirport($name_airport, $location);
+        $data = [
+            'name' => $request->input('name'),
+            'location' => $request->input('location'),
+        ];
 
-        if ($count_err > 0) {
-            with('name', $name_airport);
-            with('location', $location);
+        $rules = AirportRequest::rules();
+        $messages = AirportRequest::messages();
 
-            $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
+        $validator = new Validator($data, $rules, $messages);
 
-        } else {
-            // Handle updating airport
-            $data = [
-                'name' => $name_airport,
-                'location' => $location,
-                'updated_at' => date('Y-m-d H:i:s'),
-            ];
+        if ($validator->validate()) {
 
-            $result = $this->airportRepository->updateAirport($id_airport, $data);
+            $result = $this->airportRepository->updateAirport($airportId, $data);
 
-            // Handle the result
-            if($this->handleResult($result)) {
+            if($result !== false && $result !== null) {
                 Session::set('success', 'Cập nhật thành công');
-                $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
+                $this->redirect('admin/san-bay/cap-nhat/' .$airportId);
 
             }else {
-                Session::set('not_success', 'Cập nhật thất bại');
-                $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
-
+                Session::set('success', 'Cập nhật thất bại!');
+                $this->redirect('admin/san-bay/cap-nhat/' .$airportId);
             }
 
+
+        }else {
+            $errors = $validator->errors();
+            foreach ($errors as $field => $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    Session::set('err_'.$field, $errorMessage);
+
+                }
+            }
+
+            // Lưu lại value của input sau khi thông báo lỗi
+            foreach ($data as $field => $msg) {
+
+                with(
+                    $field,
+                    $request->input($field)
+                );
+            }
+
+
+            Session::set('not_success', 'Cập nhật không thành công vui lòng kiểm tra lại !');
+            $this->redirect('admin/san-bay/cap-nhat/' .$airportId);
         }
-
     }
-
 
     private function validateAirport($name, $location)
     {

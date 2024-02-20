@@ -26,11 +26,16 @@ Route::get('/admin/tai-khoan/xoa',[UserController::class,'handleDeleteUser']);
 Route::get('/admin/ve',[TicketController::class,'index']);
 Route::get('/admin/them-ve',[TicketController::class,'add']);
 Route::post('/admin/them-ve',[TicketController::class,'handleAddTicket']);
+Route::get('/admin/ve/cap-nhat',[TicketController::class,'updateTicket']);
+Route::post('/admin/ve/cap-nhat',[TicketController::class,'handleUpdateTicket']);
+Route::get('/admin/ve/xoa',[TicketController::class,'handleDeleteTicket']);
 
 Route::get('/admin/hang-hang-khong',[AirlineController::class,'index']);
 Route::get('/admin/them-hang-hang-khong',[AirlineController::class,'addAirline']);
 Route::post('/admin/them-hang-hang-khong',[AirlineController::class,'handleAddAirline']);
 Route::get('/admin/hang-khong/xoa',[AirlineController::class,'handleDeleteAirline']);
+Route::get('/admin/hang-khong/cap-nhat',[AirlineController::class,'updateAirline']);
+Route::post('/admin/hang-khong/cap-nhat',[AirlineController::class,'handleUpdateAirline']);
 
 Route::get('/admin/san-bay',[AirportController::class,'index']);
 Route::get('/admin/them-san-bay',[AirportController::class,'addAirport']);

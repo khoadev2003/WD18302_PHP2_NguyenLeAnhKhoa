@@ -7,6 +7,9 @@ use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
 use App\Models\Flight;
+use App\Repositories\AirlineRepository;
+use App\Repositories\AirportRepository;
+use App\Repositories\FlightsRepository;
 use App\Repositories\UserRepository;
 use App\Validator\TicketValidator;
 use DateTime;
@@ -16,6 +19,9 @@ class TicketController extends Controller{
     public $request;
     public $FlightModel;
     public $validator;
+    public $flightRepository;
+    public $airlineRepository;
+    public $airportRepository;
 
 
     public function __construct()
@@ -23,6 +29,9 @@ class TicketController extends Controller{
         $this->request = new Request();
         $this->FlightModel = new Flight();
         $this->validator = new TicketValidator();
+        $this->flightRepository = new FlightsRepository();
+        $this->airlineRepository = new AirlineRepository();
+        $this->airportRepository = new AirportRepository();
 
 //        Check login
         UserRepository::checkLogin();
@@ -48,7 +57,13 @@ class TicketController extends Controller{
         Session::set('title_page', 'Thêm vé máy bay');
 
         $this->data['main']= 'admin/tickets/add';
-        $this->data['content']['title']= "Thêm vé máy bay";
+
+        $this->data['content'] = [
+            'title' => 'Thêm vé máy bay',
+            'list_airline' => $this->airlineRepository->getAllAirline(),
+            'list_airport' => $this->airportRepository->getAllAirport(),
+        ];
+
         $this->render('layouts/admin_layout', $this->data);
     }
 
@@ -150,19 +165,67 @@ class TicketController extends Controller{
             $this->redirect('admin/them-ve');
 
         }else {
+            $data = [
+                'name' => $name,
+                'airline_id' => $airline,
+                'seat' => $seat,
+                'price' => $price,
+                'departure_airport_id' => $departure_airport,
+                'arrival_airport_id' => $arrival_airport,
+                'departure_datetime' => $departure_date,
+                'arrival_datetime' => $arrival_date,
+            ];
 
-            Session::set('success', 'Thêm vé máy bay thành công.');
-            $this->redirect('admin/them-ve');
+            $result = $this->flightRepository->createFlight($data);
 
+            if($result !== false && $result !== null) {
+                Session::set('success', 'Thêm vé máy bay thành công.');
+                $this->redirect('admin/them-ve');
 
-            //Xử lý Models Flights
+            }else {
+                Session::set('not-success', 'Thêm vé không thành công.');
+                $this->redirect('admin/them-ve');
+            }
 
-            //Thêm dữ liệu vào database
 
         }
 
         
         
+    }
+
+    public function updateTicket()
+    {
+        Session::set('title_page', 'Cập nhật vé máy bay');
+
+        $flightId = $this->request->get('id');
+
+        $this->data['main']= 'admin/tickets/update';
+
+        $this->data['content']= [
+            'title' => 'Cập nhật vé máy bay',
+            'list_airline' => $this->airlineRepository->getAllAirline(),
+            'list_airport' => $this->airportRepository->getAllAirport(),
+            'flight_detail' => $this->flightRepository->getFlightById($flightId),
+        ];
+
+        $this->render('layouts/admin_layout', $this->data);
+
+
+    }
+
+    public function handleDeleteTicket()
+    {
+        $flightId = $this->request->get('id');
+
+        $result = $this->flightRepository->removeFlight($flightId);
+        if($result) {
+            Session::set('success', 'Xóa vé máy bay thành công!');
+            $this->redirect('admin/ve');
+        }else {
+            Session::set('not-success', 'Xóa vé máy bay thất bại!');
+            $this->redirect('admin/ve');
+        }
     }
 
 

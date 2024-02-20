@@ -15,9 +15,12 @@ RewriteRule ^test/([0-9]+)/([0-9]+)/([A-Za-z0-9-]+)$ index.php?url=test&id=$1&sl
 
 RewriteRule ^admin/ve$ index.php?url=admin/ve [L]
 RewriteRule ^admin/them-ve$ index.php?url=admin/them-ve [L]
+RewriteRule ^admin/ve/cap-nhat/([0-9]+)$ index.php?url=admin/ve/cap-nhat&id=$1 [L]
+RewriteRule ^admin/ve/xoa/([0-9]+)$ index.php?url=admin/ve/xoa&id=$1 [L]
 
 RewriteRule ^admin/hang-hang-khong$ index.php?url=admin/hang-hang-khong [L]
 RewriteRule ^admin/them-hang-hang-khong$ index.php?url=admin/them-hang-hang-khong [L]
+RewriteRule ^admin/hang-khong/cap-nhat/([0-9]+)$ index.php?url=admin/hang-khong/cap-nhat&id=$1 [L]
 RewriteRule ^admin/hang-khong/xoa/([0-9]+)$ index.php?url=admin/hang-khong/xoa&id=$1 [L]
 
 RewriteRule ^admin/san-bay$ index.php?url=admin/san-bay [L]

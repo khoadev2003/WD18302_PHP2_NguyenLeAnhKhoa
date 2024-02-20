@@ -24,4 +24,19 @@ class FlightsRepository
         return $this->flightModel->selectWithWhere('*', "arrival_airport_id  = $arrivalId");
     }
 
+    public function getFlightById(int $id)
+    {
+        return $this->flightModel->getOne($id);
+    }
+
+    public function createFlight(array $data)
+    {
+        return $this->flightModel->create($data);
+    }
+
+    public function removeFlight(int $id): bool
+    {
+        return $this->flightModel->remove($id);
+    }
+
 }

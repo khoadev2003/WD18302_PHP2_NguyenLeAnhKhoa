@@ -186,6 +186,23 @@ class Validator
         return $count === 0; // Trả về true nếu không có giá trị trùng lặp, ngược lại trả về false
     }
 
+    protected function after_or_equal($field): bool {
+        // Kiểm tra xem giá trị của trường là một ngày hợp lệ và sau hoặc bằng ngày hiện tại hay không
+        if (!isset($this->data[$field])) {
+            return false;
+        }
+
+        $inputDate = strtotime($this->data[$field]);
+        $currentDate = strtotime(date('Y-m-d')); // Lấy ngày hiện tại
+
+        return $inputDate !== false && $inputDate >= $currentDate;
+    }
+
+    protected function max_number($field, $maxValue): bool {
+        // Kiểm tra xem giá trị của trường là một số và nhỏ hơn hoặc bằng giá trị tối đa
+        return isset($this->data[$field]) && is_numeric($this->data[$field]) && $this->data[$field] <= $maxValue;
+    }
+
 
 
     protected function defaultMessage($rule, $field, $param = null): string {

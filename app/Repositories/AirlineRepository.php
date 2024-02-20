@@ -33,6 +33,11 @@ class AirlineRepository implements AirlineRepositoryInterface
 
     }
 
+    public function updateAirline(int $id, array $data): bool
+    {
+        return $this->airlineModel->update($id, $data);
+    }
+
     public function removeAirline(int $id): bool
     {
         return $this->airlineModel->remove($id);

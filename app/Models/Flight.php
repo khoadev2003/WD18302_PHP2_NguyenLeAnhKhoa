@@ -15,6 +15,7 @@ class Flight extends BaseModel
                         JOIN airlines ON flights.airline_id = airlines.id 
                         JOIN airports AS departure_airports ON flights.departure_airport_id = departure_airports.id 
                         JOIN airports AS arrival_airports ON flights.arrival_airport_id = arrival_airports.id
+                        ORDER BY flights.id DESC
                   ";
 
         return $this->db->select($query);

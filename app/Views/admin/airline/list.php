@@ -114,7 +114,7 @@ use App\Core\Session;
                                             <td class="fw-bolder"><?= $updated_at ?></td>
                                             <td class="text-end">
 
-                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
+                                                <a href="<?= action('admin/hang-khong/cap-nhat/'.$id) ?>" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
 
                                                 <!-- Danger Header Modal -->
                                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">
@@ -128,7 +128,7 @@ use App\Core\Session;
                                                                 <h4 class="modal-title text-light" id="danger-header-modalLabel">Xác nhận</h4>
                                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
                                                             </div>
-                                                            <div class="modal-body">
+                                                            <div class="modal-body float-start">
                                                                 Bạn có chắc chắn muốn xóa?
                                                             </div>
                                                             <div class="modal-footer">

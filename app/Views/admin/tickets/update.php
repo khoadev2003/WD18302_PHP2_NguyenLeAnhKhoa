@@ -1,5 +1,5 @@
 <?php
-    use App\Core\Session;
+use App\Core\Session;
 ?>
 <div class="content-page">
     <div class="content">
@@ -32,7 +32,7 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <h4 class="header-title">Thêm vé</h4>
+                            <h4 class="header-title"><?= $title ?></h4>
 
 
                             <ul class="nav nav-tabs nav-bordered mb-3">
@@ -40,15 +40,21 @@
 
                             </ul> <!-- end nav-->
                             <?php
-                                if(Session::has('success')):
-                            ?>
-                            <div class="alert alert-success">
-                                
-                                <?= Session::pull('success') ?>
-                                
-                            </div>
+                            if(Session::has('success')):
+                                ?>
+                                <div class="alert alert-success">
+
+                                    <?= Session::pull('success') ?>
+
+                                </div>
                             <?php
-                                endif
+                            endif
+                            ?>
+
+                            <?php
+                            foreach ($flight_detail as $flight) {
+
+                            }
                             ?>
 
                             <div class="tab-content">
@@ -59,13 +65,18 @@
                                                 <div class="mb-3">
                                                     <label for="example-select" class="form-label">Hãng hàng không</label>
 
-                                                    <select name="airline" class="form-select" id="select_airline" required> 
+                                                    <select name="airline" class="form-select" id="select_airline" required>
                                                         <option value="0" selected>Chọn hãng hàng không</option>
                                                         <?php
                                                         foreach ($list_airline as $item):
                                                             extract($item);
+                                                            if($flight['airline_id'] == $id) {
+                                                                echo '<option selected value="<?= $id ?>">' .$name. '</option>';
+                                                            }else {
+                                                                echo '<option value="<?= $id ?>">'. $name .'</option>';
+                                                            }
                                                         ?>
-                                                            <option value="<?= $id ?>"><?= $name ?></option>
+
                                                         <?php
                                                         endforeach;
                                                         ?>
@@ -76,21 +87,21 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Máy bay</label>
-                                                    <input type="text" name="name" value="<?= old('name') ?>" id="simpleinput" class="form-control" placeholder="Số hiệu máy bay">
+                                                    <input type="text" name="name" value="<?= old('name', $flight['name']) ?>" id="simpleinput" class="form-control" placeholder="Số hiệu máy bay">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_name') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Giá tiền</label>
-                                                    <input type="number" name="price" value="<?= old('price') ?>" id="simpleinput" class="form-control" placeholder="Giá tiền">
+                                                    <input type="number" name="price" value="<?= old('price' , $flight['price']) ?>" id="simpleinput" class="form-control" placeholder="Giá tiền">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_price') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="simpleinput" class="form-label">Số ghế</label>
-                                                    <input type="number" name="seat" value="<?= old('seat') ?>" id="simpleinput" class="form-control" placeholder="Nhập số ghế">
+                                                    <input type="number" name="seat" value="<?= old('seat', $flight['seat']) ?>" id="simpleinput" class="form-control" placeholder="Nhập số ghế">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_seat') ?>
                                                     </span>
@@ -109,8 +120,13 @@
                                                         <?php
                                                         foreach ($list_airport as $item):
                                                             extract($item);
-                                                            ?>
-                                                            <option value="<?= $id ?>"><?= $name ?></option>
+                                                            if($flight['departure_airport_id'] == $id) {
+                                                                echo '<option selected value="<?= $id ?>">' .$name. '</option>';
+                                                            }else {
+                                                                echo '<option value="<?= $id ?>">'. $name .'</option>';
+                                                            }
+                                                        ?>
+
                                                         <?php
                                                         endforeach;
                                                         ?>
@@ -125,7 +141,7 @@
                                                         Ngày khởi hành
                                                         <=> <span class="text-success">Chỉ được nhập ngày hiện tại hoặc tương lai</span>
                                                     </label>
-                                                    <input class="form-control" value="<?= old('departure_date') ?>" id="departure_date" type="datetime-local" name="departure_date">
+                                                    <input class="form-control" value="<?= old('departure_date', $flight['departure_datetime']) ?>" id="departure_date" type="datetime-local" name="departure_date">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_departure_date') ?>
                                                     </span>
@@ -138,8 +154,13 @@
                                                         <?php
                                                         foreach ($list_airport as $item):
                                                             extract($item);
-                                                            ?>
-                                                            <option value="<?= $id ?>"><?= $name ?></option>
+                                                            if($flight['arrival_airport_id'] == $id) {
+                                                                echo '<option selected value="<?= $id ?>">' .$name. '</option>';
+                                                            }else {
+                                                                echo '<option value="<?= $id ?>">'. $name .'</option>';
+                                                            }
+                                                       ?>
+
                                                         <?php
                                                         endforeach;
                                                         ?>
@@ -154,16 +175,16 @@
                                                         Ngày đến
                                                         <=> <span class="text-success">Ngày đến phải bằng hoặc sau ngày đi</span>
                                                     </label>
-                                                    <input class="form-control" value="<?= old('arrival_date') ?>" name="arrival_date" id="arrival_date" type="datetime-local" name="arrival_date">
+                                                    <input class="form-control" value="<?= old('arrival_date', $flight['arrival_datetime']) ?>" name="arrival_date" id="arrival_date" type="datetime-local" name="arrival_date">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_arrival_date') ?>
                                                     </span>
                                                 </div>
-                                                
+
 
                                                 <!-- Xác nhận thêm vé -->
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#success-header-modal">
-                                                    Thêm vé máy bay
+                                                    Cập nhật vé
                                                 </button>
 
                                                 <a href="<?= action('admin/ve') ?>" class="btn btn-danger">Danh sách</a>
@@ -180,7 +201,7 @@
                                                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-hidden="true"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Bạn có chắc chắn muốn thêm vé?
+                                                                Bạn có chắc chắn muốn cập nhật?
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Đóng</button>
