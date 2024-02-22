@@ -25,7 +25,7 @@ Route::get('/admin/tai-khoan/xoa',[UserController::class,'handleDeleteUser']);
 
 Route::get('/admin/ve',[TicketController::class,'index']);
 Route::get('/admin/them-ve',[TicketController::class,'add']);
-Route::post('/admin/them-ve',[TicketController::class,'handleAddTicket']);
+Route::post('/admin/them-ve',[TicketController::class,'testAddHandle']);
 Route::get('/admin/ve/cap-nhat',[TicketController::class,'updateTicket']);
 Route::post('/admin/ve/cap-nhat',[TicketController::class,'handleUpdateTicket']);
 Route::get('/admin/ve/xoa',[TicketController::class,'handleDeleteTicket']);

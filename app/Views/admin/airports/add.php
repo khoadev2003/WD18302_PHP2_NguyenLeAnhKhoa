@@ -49,6 +49,18 @@ use App\Core\Session;
                             endif
                             ?>
 
+                            <?php
+                            if(Session::has('not-success')):
+                                ?>
+                                <div class="alert alert-danger">
+
+                                    <?= Session::pull('not-success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
+
                             <div class="tab-content">
                                 <div class="tab-pane show active" id="input-types-preview">
                                     <form action="" method="post">
@@ -63,7 +75,7 @@ use App\Core\Session;
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="logo-airline" class="form-label">Địa diểm</label>
+                                                    <label for="logo-airline" class="form-label">Vị trí</label>
                                                     <input type="text" name="location" value="<?= old('location') ?>" id="logo-airline" class="form-control" placeholder="Địa điểm">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_location') ?>

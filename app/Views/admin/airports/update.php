@@ -50,6 +50,18 @@ use App\Core\Session;
                             ?>
 
                             <?php
+                            if(Session::has('not-success')):
+                                ?>
+                                <div class="alert alert-danger">
+
+                                    <?= Session::pull('not-success') ?>
+
+                                </div>
+                            <?php
+                            endif
+                            ?>
+
+                            <?php
 
                             foreach ($airport_detail as $item) {
                                 extract($item);

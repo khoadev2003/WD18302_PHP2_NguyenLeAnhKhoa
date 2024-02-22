@@ -19,13 +19,13 @@ class AirportRequest
 
         return [
             'name' => [
-                'required' => 'Tên sân bay không để trống!',
-                'max' => 'Tên sân bay tối đa 255 ký tự!',
-                'unique' => 'Tên sân bay đã tồn tại',
+                'required' => 'Tên sân bay không để trống.',
+                'max' => 'Tên sân bay tối đa 255 ký tự.',
+                'unique' => 'Tên sân bay đã tồn tại.',
             ],
-            'logo_path' => [
-                'required' => 'Vị trí để trống!',
-                'max' => 'Vị trí tối đa 255 ký tự!',
+            'location' => [
+                'required' => 'Vị trí không để trống.',
+                'max' => 'Vị trí tối đa 255 ký tự.',
             ],
         ];
 

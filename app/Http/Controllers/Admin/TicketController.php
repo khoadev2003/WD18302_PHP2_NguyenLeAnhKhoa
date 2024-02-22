@@ -6,12 +6,14 @@ namespace App\Http\Controllers\Admin;
 use App\Core\Controller;
 use App\Core\Request;
 use App\Core\Session;
+use App\Http\Requests\FlightRequest;
 use App\Models\Flight;
 use App\Repositories\AirlineRepository;
 use App\Repositories\AirportRepository;
 use App\Repositories\FlightsRepository;
 use App\Repositories\UserRepository;
 use App\Validator\TicketValidator;
+use App\Validator\Validator;
 use DateTime;
 
 class TicketController extends Controller{
@@ -65,6 +67,77 @@ class TicketController extends Controller{
         ];
 
         $this->render('layouts/admin_layout', $this->data);
+    }
+
+    public function testAddHandle()
+    {
+        $data = [
+            'name' => trim($this->request->input('name')),
+            'airline_id' => $this->request->input('airline'),
+            'seat' => trim($this->request->input('seat')),
+            'price' => trim($this->request->input('price')),
+            'departure_airport_id' => $this->request->input('departure_airport'),
+            'arrival_airport_id' => $this->request->input('arrival_airport'),
+            'departure_datetime' => $this->request->input('departure_date'),
+            'arrival_datetime' => $this->request->input('arrival_date'),
+        ];
+
+
+        //Ngày đến không được nhỏ hơn ngày xuất phát
+        $arrivalDateTime = new DateTime($data['arrival_datetime']);
+        $departureDateTime = new DateTime($data['departure_datetime']);
+
+        if($arrivalDateTime < $departureDateTime->modify('+2 hours')) {
+            Session::set('err_arrival_datetime', 'Thời gian đến phải cách thời gian khởi hành ít nhất 2 giờ.');
+        }
+
+
+        $rules = FlightRequest::rules();
+        $messages = FlightRequest::messages();
+
+        $validator = new Validator($data, $rules, $messages);
+
+        if ($validator->validate()) {
+
+            $result = $this->flightRepository->createFlight($data);
+
+            if($result !== false && $result !== null) {
+                Session::set('success', 'Thêm vé thành công.');
+                $this->redirect('admin/ve');
+
+            }else {
+                Session::set('not-success', 'Thêm vé thất bại.!');
+                $this->redirect('admin/ve');
+            }
+
+
+        }else {
+            $errors = $validator->errors();
+            foreach ($errors as $field => $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    Session::set('err_'.$field, $errorMessage);
+
+                }
+            }
+
+            // Lưu lại value của input sau khi thông báo lỗi
+            foreach ($data as $field => $msg) {
+//                dd($field, $this->request->input($field));
+                with(
+                    $field,
+                    $this->request->input($field)
+                );
+            }
+
+            with('departure_date', $data['departure_datetime']);
+            with('arrival_date', $data['arrival_datetime']);
+            with('airline_id', $data['airline_id']);
+
+
+            $this->redirect('admin/them-ve');
+        }
+
+
     }
 
     public function handleAddTicket() {

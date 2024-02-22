@@ -102,7 +102,7 @@
                             <a href="javascript: void(0);" class="float-end close-btn text-white">
                                 <i class="mdi mdi-close"></i>
                             </a>
-                            <img src="<?= asset('admin/assets/images/VJ.png') ?>" height="90" alt="Helper Icon Image" />
+                            <img src="<?= asset('uploads/VJ.png') ?>" height="90" alt="Helper Icon Image" />
                             <h5 class="mt-3">Đối tác hàng đầu</h5>
                             <p class="mb-3">Với hơn 10 năm hợp tác phát triển</p>
                             <a href="javascript: void(0);" class="btn btn-secondary btn-sm">Upgrade</a>
@@ -113,7 +113,7 @@
                             <a href="javascript: void(0);" class="float-end close-btn text-white">
                                 <i class="mdi mdi-close"></i>
                             </a>
-                            <img src="<?= asset('admin/assets/images/BL.png') ?>" height="90" alt="Helper Icon Image" />
+                            <img src="<?= asset('uploads/BL.png') ?>" height="90" alt="Helper Icon Image" />
                             <h5 class="mt-3">Đối tác hàng đầu</h5>
                             <p class="mb-3">Với hơn 10 năm hợp tác phát triển</p>
                             <a href="javascript: void(0);" class="btn btn-secondary btn-sm">Upgrade</a>

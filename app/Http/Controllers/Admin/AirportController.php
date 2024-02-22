@@ -58,60 +58,58 @@ class AirportController extends Controller{
         $this->render('layouts/admin_layout', $this->data);
     }
 
+
+
     public function handleAddAirport()
     {
-        $count_err = 0;
+        $request = new Request();
 
-        $name_airport = $this->request->input('name');
-        $location = $this->request->input('location');
+        $data = [
+            'name' => trim($request->input('name')),
+            'location' => trim($request->input('location')),
+        ];
 
+        $rules = AirportRequest::rules();
+        $messages = AirportRequest::messages();
 
-        if($this->airportValidator->checkNameExists($name_airport)) {
-            Session::set('err_name', 'Tên sân bay đã tồn tại');
-            $count_err++;
-        }
+        $validator = new Validator($data, $rules, $messages);
 
-        if(empty($name_airport)) {
-            Session::set('err_name', 'Tên sân bay không được để trống');
-            $count_err++;
-        }elseif (strlen($name_airport) > 255) {
-            Session::set('err_name', 'Tên sân bay tối đa 255 ký tự');
-            $count_err++;
-        }
-
-        if(empty($location)) {
-            Session::set('err_location', 'Địa điểm không được để trống');
-            $count_err++;
-        }elseif (strlen($location) > 255) {
-            Session::set('err_location', 'Địa điểm tối đa 255 ký tự');
-            $count_err++;
-        }
-
-        if($count_err > 0) {
-            with('name', $name_airport);
-            with('location', $location);
-
-            $this->redirect('admin/them-san-bay');
-        }else {
-            //Xử lý thêm sân bay -> airportRepository
-            $data = [
-                'name' => $name_airport,
-                'location' => $location,
-            ];
+        if ($validator->validate()) {
 
             $result = $this->airportRepository->createAirport($data);
 
-            if ($result !== false && $result !== null) {
+            if($result !== false && $result !== null) {
                 Session::set('success', 'Thêm sân bay thành công.');
+                $this->redirect('admin/san-bay');
 
-            } else {
-                Session::set('error', 'Thêm sân bay thất bại.');
-
+            }else {
+                Session::set('not-success', 'Thêm sân bay thất bại.!');
+                $this->redirect('admin/san-bay');
             }
 
-            $this->redirect('admin/san-bay');
-        }
 
+        }else {
+            $errors = $validator->errors();
+            foreach ($errors as $field => $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    Session::set('err_'.$field, $errorMessage);
+
+                }
+            }
+
+            // Lưu lại value của input sau khi thông báo lỗi
+            foreach ($data as $field => $msg) {
+
+                with(
+                    $field,
+                    $request->input($field)
+                );
+            }
+
+
+            Session::set('not-success', 'Thêm sân bay thất bại vui lòng kiểm tra lại !');
+            $this->redirect('admin/them-san-bay');
+        }
     }
 
     public function updateAirport() {
@@ -129,44 +127,6 @@ class AirportController extends Controller{
         $this->render('layouts/admin_layout', $this->data);
     }
 
-//    public function handleUpdateAirport() {
-//        $id_airport = $this->request->get('id');
-//
-//        $name_airport = $this->request->input('name');
-//        $location = $this->request->input('location');
-//
-//        $count_err = $this->validateAirport($name_airport, $location);
-//
-//        if ($count_err > 0) {
-//            with('name', $name_airport);
-//            with('location', $location);
-//
-//            $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
-//
-//        } else {
-//            // Handle updating airport
-//            $data = [
-//                'name' => $name_airport,
-//                'location' => $location,
-//                'updated_at' => date('Y-m-d H:i:s'),
-//            ];
-//
-//            $result = $this->airportRepository->updateAirport($id_airport, $data);
-//
-//            // Handle the result
-//            if($this->handleResult($result)) {
-//                Session::set('success', 'Cập nhật thành công');
-//                $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
-//
-//            }else {
-//                Session::set('not_success', 'Cập nhật thất bại');
-//                $this->redirect('admin/san-bay/cap-nhat/'.$id_airport);
-//
-//            }
-//
-//        }
-//
-//    }
 
     public function handleUpdateAirport()
     {
@@ -174,8 +134,8 @@ class AirportController extends Controller{
         $airportId = $this->request->get('id');
 
         $data = [
-            'name' => $request->input('name'),
-            'location' => $request->input('location'),
+            'name' => trim($request->input('name')),
+            'location' => trim($request->input('location')),
         ];
 
         $rules = AirportRequest::rules();
@@ -192,7 +152,7 @@ class AirportController extends Controller{
                 $this->redirect('admin/san-bay/cap-nhat/' .$airportId);
 
             }else {
-                Session::set('success', 'Cập nhật thất bại!');
+                Session::set('not-success', 'Cập nhật thất bại!');
                 $this->redirect('admin/san-bay/cap-nhat/' .$airportId);
             }
 
@@ -216,7 +176,7 @@ class AirportController extends Controller{
             }
 
 
-            Session::set('not_success', 'Cập nhật không thành công vui lòng kiểm tra lại !');
+            Session::set('not-success', 'Cập nhật không thành công vui lòng kiểm tra lại !');
             $this->redirect('admin/san-bay/cap-nhat/' .$airportId);
         }
     }

@@ -65,8 +65,17 @@ class Validator
      * @param $field
      * @return bool
      */
-    protected function required($field):bool {
-        return isset($this->data[$field]) && !empty($this->data[$field]);
+//    protected function required($field):bool {
+//        return isset($this->data[$field]) && !empty($this->data[$field]);
+//    }
+
+    protected function greater_than_zero($field): bool {
+        return isset($this->data[$field]) && $this->data[$field] > 0;
+    }
+
+
+    protected function required($field): bool {
+        return isset($this->data[$field]) && trim($this->data[$field]) !== '';
     }
 
     protected function min($field, $value):bool {
@@ -84,6 +93,16 @@ class Validator
 
     protected function numeric($field): bool {
         return isset($this->data[$field]) && is_numeric($this->data[$field]);
+    }
+
+
+    protected function integer($field): bool {
+        if (!isset($this->data[$field])) {
+            return false;
+        }
+
+        $value = $this->data[$field];
+        return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 
     protected function string($field): bool {
@@ -203,6 +222,17 @@ class Validator
         return isset($this->data[$field]) && is_numeric($this->data[$field]) && $this->data[$field] <= $maxValue;
     }
 
+    protected function future_datetime($field): bool {
+        if (!isset($this->data[$field])) {
+            return false;
+        }
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+        $datetime = $this->data[$field];
+        $currentDatetime = date('Y-m-d H:i:s'); // Lấy ngày giờ hiện tại
+        return $datetime >= $currentDatetime; // Kiểm tra ngày giờ có lớn hơn hoặc bằng ngày giờ hiện tại không
+    }
+
 
 
     protected function defaultMessage($rule, $field, $param = null): string {
@@ -216,6 +246,9 @@ class Validator
             'unique' => "Trường $field đã tồn tại.",
             'numeric' => "Trường $field chỉ được nhập số.",
             'file_format' => "Trường $field không đúng định dạng.",
+            'not_same' => "Trường $field không được trùng.",
+            'future_datetime' => "Không được nhập ngày giờ quá khứ.",
+            'integer' => "Trường $field chỉ được nhập số nguyên.",
         ];
 
         return $defaultMessages[$rule];

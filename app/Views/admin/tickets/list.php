@@ -85,7 +85,6 @@ use App\Core\Session;
                                             <th>Tên chuyến bay</th>
                                             <th>Thông tin</th>
                                             <th>Số ghế</th>
-<!--                                            <th>Hiện còn</th>-->
                                             <th>Giá</th>
                                             <th>Thao tác</th>
 
@@ -120,11 +119,11 @@ use App\Core\Session;
                                                 </div>
                                             </td>
                                             <td><?=$seat ?></td>
-<!--                                            <td>--><?php //=$seat ?><!--</td>-->
                                             <td><?= number_format($price) ?>.đ</td>
                                             <td>
-                                                <a href="<?= action('admin/ve/cap-nhat/').$id ?>" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
-                                                <a href="<?= action('admin/ve/cap-nhat/').$id ?>" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
+                                                
+                                                <a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
+                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
 
                                                 <!-- Danger Header Modal -->
                                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">
