@@ -93,6 +93,11 @@ class UserRepository implements UserRepositoryInterface
         return $this->userModel->selectWithWhere('username', "username = '$username'");
     }
 
+    public function isPhoneUnique(string $phone)
+    {
+        return $this->userModel->selectWithWhere('phone', "phone = '$phone'");
+    }
+
     public function isEmailUnique(string $email)
     {
         return $this->userModel->selectWithWhere('email', "email = '$email'");

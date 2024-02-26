@@ -52,11 +52,18 @@ class AirlineController extends Controller{
     public function handleAddAirline()
     {
         $request = new Request();
+        $count_err=0;
 
         $data = [
             'name' => trim($request->input('name')),
             'logo_path' => $_FILES['logo_path'],
         ];
+
+        $checkNameUnique = $this->airlineRepository->isNameUnique($data['name']);
+        if(count($checkNameUnique) > 0) {
+            Session::set('err_name', 'Tên hãng đã tồn tại');
+            $count_err++;;
+        }
 
 
         $rules = AirlineRequest::rules();
@@ -65,7 +72,7 @@ class AirlineController extends Controller{
         $validator = new Validator($data, $rules, $messages);
 
 
-        if ($validator->validate()) {
+        if ($validator->validate() && $count_err == 0) {
 
             $uploadDirectory = 'public/uploads';
 //            dd($uploadDirectory);
@@ -154,6 +161,7 @@ class AirlineController extends Controller{
     {
         $request = new Request();
         $airlineId = $request->get('id');
+        $count_err = 0;
 
         if(!empty($_FILES['logo_path']['name'])) {
             $data = [
@@ -166,13 +174,19 @@ class AirlineController extends Controller{
             ];
         }
 
+        $checkNameUnique = $this->airlineRepository->isNameUniqueExcludeCurrent($data['name'], $airlineId);
+        if(count($checkNameUnique) > 0) {
+            Session::set('err_name', 'Tên hãng đã tồn tại');
+            $count_err++;;
+        }
+
         $rules = AirlineRequest::rulesUpdate();
         $messages = AirlineRequest::messagesUpdate();
 
         $validator = new Validator($data, $rules, $messages);
 
 
-        if ($validator->validate()) {
+        if ($validator->validate() && $count_err == 0) {
 
             // Nếu có cập nhật ảnh
             if(!empty($_FILES['logo_path']['name'])) {

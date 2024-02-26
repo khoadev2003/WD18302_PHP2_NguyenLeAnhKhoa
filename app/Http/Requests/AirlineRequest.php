@@ -8,7 +8,7 @@ class AirlineRequest
     {
 
         return [
-            'name' => 'required|max:255|unique:airlines',
+            'name' => 'required|max:255',
             'logo_path' => 'file_format:jpg,png',
         ];
 
@@ -21,7 +21,6 @@ class AirlineRequest
             'name' => [
                 'required' => 'Tên hãng không để trống!',
                 'max' => 'Tên hãng tối đa 255 ký tự!',
-                'unique' => 'Tên hãng đã tồn tại',
             ],
             'logo_path' => [
                 'required' => 'Logo không để trống!',
@@ -35,7 +34,7 @@ class AirlineRequest
     {
 
         return [
-            'name' => 'required|max:255|unique:airlines',
+            'name' => 'required|max:255',
         ];
 
     }
@@ -47,7 +46,6 @@ class AirlineRequest
             'name' => [
                 'required' => 'Tên hãng không để trống!',
                 'max' => 'Tên hãng tối đa 255 ký tự!',
-                'unique' => 'Tên hãng đã tồn tại',
             ],
 
         ];

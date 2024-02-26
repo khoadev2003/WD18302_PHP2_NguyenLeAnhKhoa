@@ -16,7 +16,7 @@ use App\Core\Session;
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
                                 <li class="breadcrumb-item"><a href="<?= action('admin/ve') ?>">Danh sách vé</a></li>
-                                <li class="breadcrumb-item active">Thêm vé</li>
+                                <li class="breadcrumb-item active"><?= $title ?></li>
                             </ol>
                         </div>
                         <h4 class="page-title"><?= $title ?></h4>

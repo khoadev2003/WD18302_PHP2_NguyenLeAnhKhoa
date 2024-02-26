@@ -87,6 +87,8 @@ use App\Core\Session;
                                                     Thêm sân bay
                                                 </button>
 
+                                                <a href="<?= action('admin/san-bay') ?>" class="btn btn-danger">Danh sách</a>
+
                                                 <button type="button" tabindex="0" class="btn btn-dark" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Nhập đầy đủ các thông tin để thêm sân bay." title="Lưu ý !">
                                                     Hướng dẫn
                                                 </button>

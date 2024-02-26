@@ -18,6 +18,16 @@ class AirportRepository implements AirportRepositoryInterface
         return $this->airportModel->getOne($airportId);
     }
 
+    public function isNameUniqueExcludeCurrent(string $name, int $currentId)
+    {
+        return $this->airportModel->selectWithWhere('name', "name = '$name' AND id != '$currentId'");
+    }
+
+    public function isNameUnique(string $name)
+    {
+        return $this->airportModel->selectWithWhere('name', "name = '$name'");
+    }
+
     public function getAllAirport()
     {
         return $this->airportModel->getAll();

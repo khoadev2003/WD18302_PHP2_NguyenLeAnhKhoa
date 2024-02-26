@@ -89,6 +89,8 @@
                                                     Thêm hãng
                                                 </button>
 
+                                                <a href="<?= action('admin/hang-hang-khong') ?>" class="btn btn-danger">Danh sách</a>
+
                                                 <button type="button" tabindex="0" class="btn btn-dark" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Nhập đầy đủ các thông tin để thêm hãng hàng không." title="Lưu ý !">
                                                     Hướng dẫn
                                                 </button>

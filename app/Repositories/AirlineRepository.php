@@ -18,6 +18,16 @@ class AirlineRepository implements AirlineRepositoryInterface
         return $this->airlineModel->getOne($airlineId);
     }
 
+    public function isNameUniqueExcludeCurrent(string $name, int $currentId)
+    {
+        return $this->airlineModel->selectWithWhere('name', "name = '$name' AND id != '$currentId'");
+    }
+
+    public function isNameUnique(string $name)
+    {
+        return $this->airlineModel->selectWithWhere('name', "name = '$name'");
+    }
+
     public function getAllAirline()
     {
         return $this->airlineModel->getAll();

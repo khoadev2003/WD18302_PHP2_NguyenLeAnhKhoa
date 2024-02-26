@@ -8,7 +8,7 @@ class AirportRequest
     {
 
         return [
-            'name' => "required|max:255|unique:airports",
+            'name' => "required|max:255",
             'location' => 'required|max:255',
         ];
     }
@@ -21,7 +21,6 @@ class AirportRequest
             'name' => [
                 'required' => 'Tên sân bay không để trống.',
                 'max' => 'Tên sân bay tối đa 255 ký tự.',
-                'unique' => 'Tên sân bay đã tồn tại.',
             ],
             'location' => [
                 'required' => 'Vị trí không để trống.',

@@ -46,6 +46,7 @@ class UserController extends Controller
 
     public function handleAddUser() {
         $request = new Request();
+        $count_err=0;
 
         $data = [
             'fullname' => trim($request->input('fullname')),
@@ -57,12 +58,31 @@ class UserController extends Controller
 //            'image' => $_FILES['image'],
         ];
 
+        $checkEmailUnique = $this->userRepository->isEmailUnique($data['email']);
+        if(count($checkEmailUnique) > 0) {
+            Session::set('err_email', 'Địa chỉ email đã tồn tại');
+            $count_err++;
+        }
+
+        $checkPhoneUnique = $this->userRepository->isPhoneUnique($data['phone']);
+        if(count($checkPhoneUnique) > 0) {
+            Session::set('err_phone', 'Số điện thoại đã tồn tại');
+            $count_err++;
+        }
+
+        $checkPhoneUnique = $this->userRepository->isUsernameUnique($data['username']);
+        if(count($checkPhoneUnique) > 0) {
+            Session::set('err_username', 'Tên đăng nhập đã tồn tại');
+            $count_err++;
+        }
+
+
         $rules = UserRequest::rules();
         $messages = UserRequest::messages();
 
         $validator = new Validator($data, $rules, $messages);
 
-        if ($validator->validate()) {
+        if ($validator->validate() && $count_err == 0) {
 
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
             unset($data['confirm']);

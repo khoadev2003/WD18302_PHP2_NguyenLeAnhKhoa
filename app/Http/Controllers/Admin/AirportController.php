@@ -63,18 +63,25 @@ class AirportController extends Controller{
     public function handleAddAirport()
     {
         $request = new Request();
+        $count_err = 0;
 
         $data = [
             'name' => trim($request->input('name')),
             'location' => trim($request->input('location')),
         ];
 
+        $checkNameUnique = $this->airportRepository->isNameUnique($data['name']);
+        if(count($checkNameUnique) > 0) {
+            Session::set('err_name', 'Tên sân bay đã tồn tại');
+            $count_err++;;
+        }
+
         $rules = AirportRequest::rules();
         $messages = AirportRequest::messages();
 
         $validator = new Validator($data, $rules, $messages);
 
-        if ($validator->validate()) {
+        if ($validator->validate() && $count_err == 0) {
 
             $result = $this->airportRepository->createAirport($data);
 
@@ -138,18 +145,25 @@ class AirportController extends Controller{
     {
         $request = new Request();
         $airportId = $this->request->get('id');
+        $count_err = 0;
 
         $data = [
             'name' => trim($request->input('name')),
             'location' => trim($request->input('location')),
         ];
 
+        $checkNameUnique = $this->airportRepository->isNameUniqueExcludeCurrent($data['name'], $airportId);
+        if(count($checkNameUnique) > 0) {
+            Session::set('err_name', 'Tên sân bay đã tồn tại');
+            $count_err++;;
+        }
+
         $rules = AirportRequest::rules();
         $messages = AirportRequest::messages();
 
         $validator = new Validator($data, $rules, $messages);
 
-        if ($validator->validate()) {
+        if ($validator->validate() && $count_err == 0) {
 
             $result = $this->airportRepository->updateAirport($airportId, $data);
 

@@ -10,12 +10,12 @@ class UserRequest
 
         return [
             'fullname' => 'required|min:3|max:255|alphabet|not_same:username',
-            'username' => 'required|min:3|max:20|unique:users|username',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required|phone|unique:users',
+            'username' => 'required|min:3|max:20|username',
+            'email' => 'required|email',
+            'phone' => 'required|phone|max:10',
             'password' => 'required|min:5|max:255|strong_password',
             'confirm' => 'required|same:password',
-//            'image' => 'required|file_format:jpg,png',
+
         ];
 
     }
@@ -31,7 +31,6 @@ class UserRequest
                 'not_same' => 'Họ tên không được trùng tên đăng nhập'
             ],
             'username' => [
-                'unique' => 'Tài khoản đã tồn tại',
                 'required' => 'Tài khoản không để trống',
                 'min' => 'Tên dăng nhập ít nhất 3 ký tự',
                 'max' => 'Tên dăng nhập tối đa 20 ký tự',
@@ -40,12 +39,11 @@ class UserRequest
             'email' => [
                 'required' => 'Email không để trống.',
                 'email' => 'Email không hợp lệ',
-                'unique' => 'Địa chủ email đã tồn tại',
             ],
             'phone' => [
                 'required' => 'Số điện thoại để trống',
                 'phone' => 'Số điện thoại không hợp lệ',
-                'unique' => 'Số điện thoại đã tồn tại',
+                'max' => 'Số điện thoại tối đa 10 số.',
 
             ],
             'password' => [
