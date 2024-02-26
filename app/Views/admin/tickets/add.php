@@ -125,7 +125,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="departure_date" class="form-label">
-                                                        Ngày khởi hành
+                                                        Ngày giờ khởi hành
 
                                                     </label>
                                                     <input class="form-control" value="<?= old('departure_date') ?>" id="departure_date" type="datetime-local" name="departure_date">
@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="arrival_date" class="form-label">
-                                                        Ngày đến
+                                                        Ngày giờ đến
 
                                                     </label>
                                                     <input class="form-control" value="<?= old('arrival_date') ?>" name="arrival_date" id="arrival_date" type="datetime-local" name="arrival_date">

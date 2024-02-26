@@ -104,6 +104,98 @@ class UserController extends Controller
 
     }
 
+    public function updateUser()
+    {
+        Session::set('title_page', 'Cập nhật tài khoản');
+        $request = new Request();
+        $userId = $request->get('id');
+
+        $checkIdExists = $this->userRepository->checkIdExists($userId);
+        if(count($checkIdExists) < 1) {
+            $this->redirect('404');
+        }
+
+        $this->data['main']= 'admin/users/update';
+
+        $this->data['content'] = [
+            'title' => 'Cập nhật tài khoản',
+            'user_details' => $this->userRepository->getUserById($userId),
+        ];
+
+        $this->render('layouts/admin_layout', $this->data);
+    }
+
+    public function handleUpdateUser()
+    {
+        $request = new Request();
+        $userId = $request->get('id');
+        $count_err = 0;
+
+        $data = [
+            'fullname' => trim($request->input('fullname')),
+            'username' => trim($request->input('username')),
+            'email' => trim($request->input('email')),
+            'phone' => trim($request->input('phone')),
+        ];
+
+
+        $checkEmailUnique = $this->userRepository->isEmailUniqueExcludeCurrent($data['email'], $userId);
+        if(count($checkEmailUnique) > 0) {
+            Session::set('err_email', 'Địa chỉ email đã tồn tại');
+            $count_err++;
+        }
+
+        $checkPhoneUnique = $this->userRepository->isPhoneUniqueExcludeCurrent($data['phone'], $userId);
+        if(count($checkPhoneUnique) > 0) {
+            Session::set('err_phone', 'Số điện thoại đã tồn tại');
+            $count_err++;
+        }
+
+
+        $rules = UserRequest::ruleUpdate();
+        $messages = UserRequest::messageUpdate();
+
+        $validator = new Validator($data, $rules, $messages);
+
+        if ($validator->validate() && $count_err == 0) {
+
+
+            $result = $this->userRepository->updateUser($userId, $data);
+
+            if($result !== false && $result !== null) {
+                Session::set('success', 'Cập nhật tài khoản thành công');
+                $this->redirect('admin/tai-khoan/cap-nhat/'.$userId);
+
+            }else {
+                Session::set('not-success', 'Cập nhật tài khoản thất bại');
+                $this->redirect('admin/tai-khoan/cap-nhat/'.$userId);
+            }
+
+
+        } else {
+            $errors = $validator->errors();
+            foreach ($errors as $field => $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    Session::set('err_'.$field, $errorMessage);
+
+                }
+            }
+
+            // Lưu lại value của input sau khi thông báo lỗi
+            foreach ($data as $field => $msg) {
+
+                with(
+                    $field,
+                    $request->input($field)
+                );
+            }
+
+
+            Session::set('not-success', 'Cập nhật không thành công vui lòng kiểm tra lại !');
+            $this->redirect('admin/tai-khoan/cap-nhat/'.$userId);
+        }
+    }
+
     public function handleDeleteUser()
     {
         $request = new Request();

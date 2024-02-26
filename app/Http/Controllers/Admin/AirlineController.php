@@ -134,6 +134,12 @@ class AirlineController extends Controller{
         $request = new Request();
         $airlineId = $request->get('id');
 
+        $checkIdExists = $this->airlineRepository->checkIdExists($airlineId);
+
+        if(count($checkIdExists) < 1) {
+            $this->redirect('404');
+        }
+
         $this->data['main']= 'admin/airline/update';
 
         $this->data['content']= [

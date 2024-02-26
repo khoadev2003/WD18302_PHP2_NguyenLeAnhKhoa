@@ -121,9 +121,8 @@ use App\Core\Session;
                                             <td><?=$seat ?></td>
                                             <td><?= number_format($price) ?>.đ</td>
                                             <td>
-                                                
-                                                <a href="#" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
-                                                <a href="#" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
+                                                <a href="<?= action('admin/ve/cap-nhat/'.$id) ?>" class="btn btn-outline-primary"><i class="mdi mdi-eye"></i></a>
+                                                <a href="<?= action('admin/ve/cap-nhat/'.$id) ?>" class="btn btn-outline-warning"><i class="mdi mdi-pencil"></i></a>
 
                                                 <!-- Danger Header Modal -->
                                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">

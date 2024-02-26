@@ -20,12 +20,14 @@ Route::get('/admin/dang-xuat',[LoginController::class,'logout']);
 Route::get('/admin/tai-khoan',[UserController::class,'listUser']);
 Route::get('/admin/tai-khoan/them',[UserController::class,'addUser']);
 Route::post('/admin/tai-khoan/them',[UserController::class,'handleAddUser']);
+Route::get('/admin/tai-khoan/cap-nhat',[UserController::class,'updateUser']);
+Route::post('/admin/tai-khoan/cap-nhat',[UserController::class,'handleUpdateUser']);
 Route::get('/admin/tai-khoan/xoa',[UserController::class,'handleDeleteUser']);
 
 
 Route::get('/admin/ve',[TicketController::class,'index']);
 Route::get('/admin/them-ve',[TicketController::class,'add']);
-Route::post('/admin/them-ve',[TicketController::class,'testAddHandle']);
+Route::post('/admin/them-ve',[TicketController::class,'handleAddTicket']);
 Route::get('/admin/ve/cap-nhat',[TicketController::class,'updateTicket']);
 Route::post('/admin/ve/cap-nhat',[TicketController::class,'handleUpdateTicket']);
 Route::get('/admin/ve/xoa',[TicketController::class,'handleDeleteTicket']);

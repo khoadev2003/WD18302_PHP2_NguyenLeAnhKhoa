@@ -54,6 +54,11 @@ class UserRepository implements UserRepositoryInterface
         return $this->userModel->getAll();
     }
 
+    public function checkIdExists(int $userId)
+    {
+        return $this->userModel->getOne($userId);
+    }
+
     /**
      * @param array $data
      * @return false|mixed|string
@@ -61,6 +66,46 @@ class UserRepository implements UserRepositoryInterface
     public function createUser(array $data) {
         return $this->userModel->create($data);
 
+    }
+
+    /**
+     * @param string $username
+     * @param int $currentId
+     * @return array|false
+     */
+    public function isUsernameUniqueExcludeCurrent(string $username, int $currentId)
+    {
+        return $this->userModel->selectWithWhere('username', "username = '$username' AND id != '$currentId'");
+    }
+
+    public function isEmailUniqueExcludeCurrent(string $email, int $currentId)
+    {
+        return $this->userModel->selectWithWhere('email', "email = '$email' AND id != '$currentId'");
+    }
+
+    public function isPhoneUniqueExcludeCurrent(string $phone, int $currentId)
+    {
+        return $this->userModel->selectWithWhere('phone', "phone = '$phone' AND id != '$currentId'");
+    }
+
+    public function isUsernameUnique(string $username)
+    {
+        return $this->userModel->selectWithWhere('username', "username = '$username'");
+    }
+
+    public function isEmailUnique(string $email)
+    {
+        return $this->userModel->selectWithWhere('email', "email = '$email'");
+    }
+
+    public function getUserById(int $id)
+    {
+        return $this->userModel->getOne($id);
+    }
+
+    public function updateUser(int $id, array $data): bool
+    {
+        return $this->userModel->update($id, $data);
     }
 
     /**

@@ -46,7 +46,7 @@ class FlightRequest
             ],
             'arrival_airport_id' => [
                 'required' => 'Vui lòng chọn địa điểm đến',
-                'not_same' => 'Điểm đến không được trùng điểm khởi hành haha',
+                'not_same' => 'Điểm đến không được trùng điểm khởi hành.',
             ],
             'departure_datetime' => [
                 'required' => 'Vui lòng nhập ngày giờ khởi hành',

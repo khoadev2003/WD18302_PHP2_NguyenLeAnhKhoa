@@ -117,9 +117,9 @@ use App\Core\Session;
 
                                             <td>
 
-    <!--                                                <a href="--><?php //= action('admin/tai-khoan/cap-nhat/').$id ?><!--" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">-->
-    <!--                                                    <i class="mdi mdi-pencil"></i>-->
-    <!--                                                </a>-->
+                                                    <a href="<?= action('admin/tai-khoan/cap-nhat/').$id ?>" class="btn btn-outline-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Chỉnh sửa">
+                                                        <i class="mdi mdi-pencil"></i>
+                                                    </a>
 
                                                     <!-- Danger Header Modal -->
                                                     <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#danger-header-modal-<?=$id?>">

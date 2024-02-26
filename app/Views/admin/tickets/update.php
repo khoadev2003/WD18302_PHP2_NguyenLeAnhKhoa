@@ -66,27 +66,26 @@ use App\Core\Session;
                                                     <label for="example-select" class="form-label">Hãng hàng không</label>
 
                                                     <select name="airline" class="form-select" id="select_airline" required>
-                                                        <option value="0" selected>Chọn hãng hàng không</option>
+                                                        <option value="" selected>Chọn hãng hàng không</option>
                                                         <?php
                                                         foreach ($list_airline as $item):
                                                             extract($item);
                                                             if($flight['airline_id'] == $id) {
-                                                                echo '<option selected value="<?= $id ?>">' .$name. '</option>';
+                                                                echo '<option selected value="' . $id . '">' . $name . '</option>';
                                                             }else {
-                                                                echo '<option value="<?= $id ?>">'. $name .'</option>';
+                                                                echo '<option value="' . $id . '">' . $name . '</option>';
                                                             }
-                                                        ?>
-
+                                                            ?>
                                                         <?php
                                                         endforeach;
                                                         ?>
                                                     </select>
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_airline') ?>
+                                                        <?= Session::pull('err_airline_id') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="simpleinput" class="form-label">Máy bay</label>
+                                                    <label for="simpleinput" class="form-label">Số hiệu chuyến bay</label>
                                                     <input type="text" name="name" value="<?= old('name', $flight['name']) ?>" id="simpleinput" class="form-control" placeholder="Số hiệu máy bay">
                                                     <span class="text-danger error">
                                                         <?= Session::pull('err_name') ?>
@@ -121,10 +120,11 @@ use App\Core\Session;
                                                         foreach ($list_airport as $item):
                                                             extract($item);
                                                             if($flight['departure_airport_id'] == $id) {
-                                                                echo '<option selected value="<?= $id ?>">' .$name. '</option>';
+                                                                echo '<option selected value="' . $id . '">' . $name . '</option>';
                                                             }else {
-                                                                echo '<option value="<?= $id ?>">'. $name .'</option>';
+                                                                echo '<option value="' . $id . '">' . $name . '</option>';
                                                             }
+                                                            ?>
                                                         ?>
 
                                                         <?php
@@ -133,17 +133,17 @@ use App\Core\Session;
 
                                                     </select>
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_departure_airport') ?>
+                                                        <?= Session::pull('err_departure_airport_id') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="departure_date" class="form-label">
-                                                        Ngày khởi hành
-                                                        <=> <span class="text-success">Chỉ được nhập ngày hiện tại hoặc tương lai</span>
+                                                        Ngày giờ khởi hành
+
                                                     </label>
                                                     <input class="form-control" value="<?= old('departure_date', $flight['departure_datetime']) ?>" id="departure_date" type="datetime-local" name="departure_date">
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_departure_date') ?>
+                                                        <?= Session::pull('err_departure_datetime') ?>
                                                     </span>
                                                 </div>
 
@@ -155,9 +155,9 @@ use App\Core\Session;
                                                         foreach ($list_airport as $item):
                                                             extract($item);
                                                             if($flight['arrival_airport_id'] == $id) {
-                                                                echo '<option selected value="<?= $id ?>">' .$name. '</option>';
+                                                                echo '<option selected value="' . $id . '">' . $name . '</option>';
                                                             }else {
-                                                                echo '<option value="<?= $id ?>">'. $name .'</option>';
+                                                                echo '<option value="' . $id . '">' . $name . '</option>';
                                                             }
                                                        ?>
 
@@ -167,17 +167,17 @@ use App\Core\Session;
 
                                                     </select>
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_arrival_airport') ?>
+                                                        <?= Session::pull('err_arrival_airport_id') ?>
                                                     </span>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="arrival_date" class="form-label">
-                                                        Ngày đến
-                                                        <=> <span class="text-success">Ngày đến phải bằng hoặc sau ngày đi</span>
+                                                        Ngày giờ đến
+
                                                     </label>
                                                     <input class="form-control" value="<?= old('arrival_date', $flight['arrival_datetime']) ?>" name="arrival_date" id="arrival_date" type="datetime-local" name="arrival_date">
                                                     <span class="text-danger error">
-                                                        <?= Session::pull('err_arrival_date') ?>
+                                                        <?= Session::pull('err_arrival_datetime') ?>
                                                     </span>
                                                 </div>
 

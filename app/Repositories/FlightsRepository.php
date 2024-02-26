@@ -12,6 +12,11 @@ class FlightsRepository
         $this->flightModel = new Flight();
     }
 
+    public function checkIdExists(int $flightId)
+    {
+        return $this->flightModel->getOne($flightId);
+    }
+
     public function getFlightsByAirlineId(int $airlineId) {
         return $this->flightModel->selectWithWhere('*', "airline_id = $airlineId");
     }
@@ -32,6 +37,11 @@ class FlightsRepository
     public function createFlight(array $data)
     {
         return $this->flightModel->create($data);
+    }
+
+    public function updateFlight(int $id, array $data): bool
+    {
+        return $this->flightModel->update($id, $data);
     }
 
     public function removeFlight(int $id): bool

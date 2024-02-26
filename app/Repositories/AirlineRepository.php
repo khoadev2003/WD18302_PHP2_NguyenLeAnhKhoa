@@ -13,6 +13,11 @@ class AirlineRepository implements AirlineRepositoryInterface
         $this->airlineModel = new Airline();
     }
 
+    public function checkIdExists(int $airlineId)
+    {
+        return $this->airlineModel->getOne($airlineId);
+    }
+
     public function getAllAirline()
     {
         return $this->airlineModel->getAll();

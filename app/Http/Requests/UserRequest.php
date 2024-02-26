@@ -63,4 +63,38 @@ class UserRequest
 //            ]
         ];
     }
+
+    public static function ruleUpdate(): array
+    {
+
+        return [
+            'fullname' => 'required|min:3|max:255|alphabet',
+            'email' => 'required|email',
+            'phone' => 'required|phone|max:10',
+        ];
+
+    }
+
+    public static function messageUpdate(): array
+    {
+        return [
+            'fullname' => [
+                'required' => 'Họ tên không để trống',
+                'min' => 'Họ tên ít nhất 6 ký tự',
+                'max' => 'Họ tên tối đa 255 ký tự',
+                'alphabet' =>'Họ tên chỉ được nhập kiểu chữ',
+                'not_same' => 'Họ tên không được trùng tên đăng nhập'
+            ],
+            'email' => [
+                'required' => 'Email không để trống.',
+                'email' => 'Email không đúng định dạng.',
+            ],
+            'phone' => [
+                'required' => 'Số điện thoại để trống',
+                'phone' => 'Số điện thoại không hợp lệ',
+                'max' => 'Số điện thoại tối đa 10 số.',
+
+            ],
+        ];
+    }
 }

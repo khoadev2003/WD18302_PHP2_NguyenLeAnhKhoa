@@ -117,6 +117,12 @@ class AirportController extends Controller{
 
         $id_airport = $this->request->get('id');
 
+        $checkIdExists = $this->airportRepository->checkIdExists($id_airport);
+
+        if(count($checkIdExists) < 1) {
+            $this->redirect('404');
+        }
+
         $this->data['main']= 'admin/airports/update';
 
         $this->data['content']= [

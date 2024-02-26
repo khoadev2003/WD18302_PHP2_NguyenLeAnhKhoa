@@ -13,6 +13,11 @@ class AirportRepository implements AirportRepositoryInterface
         $this->airportModel = new Airport();
     }
 
+    public function checkIdExists(int $airportId)
+    {
+        return $this->airportModel->getOne($airportId);
+    }
+
     public function getAllAirport()
     {
         return $this->airportModel->getAll();
